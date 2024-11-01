@@ -15,6 +15,9 @@ body {
 
 /* Header styling */
 header {
+    position: fixed;
+    width: 98%;
+    z-index:3;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -47,7 +50,7 @@ nav a {
     margin: 0 15px;
     font-weight: 600;
     transition: color 0.3s, transform 0.3s;
-    font-size: 20px;
+    font-size: 30px;
     /* Increased font size for navigation links */
 }
 
@@ -217,3 +220,14 @@ section {
 
 
 }
+
+#logo-img{
+    width: 80px;
+    height: 80px;
+}
+
+.logo-text{
+    font-size: 50px;
+    font-style: italic;
+}
+
