@@ -1,7 +1,7 @@
 import sqlite3
 
 def connect():
-    return sqlite3.connect("C:\\Users\\NIYA\\Desktop\\Web applications\\rau-webapps-24-25\\CSE\\app\\back-end\\app.db")
+    return sqlite3.connect("C:\\Users\\NIYA\\Desktop\\You'll come tool\\back-end\\app.db")
 
 connection = connect()
 
@@ -11,9 +11,6 @@ query = """CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY,
     first_name VARCHAR,
     last_name VARCHAR,
-    dob TIMESTAMP,
-    gender INTEGER,
-    phone VARCHAR,
     email VARCHAR,
     password VARCHAR,
     created_at TIMESTAMP,
@@ -52,9 +49,6 @@ query = """CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     first_name VARCHAR,
     last_name VARCHAR,
-    dob TIMESTAMP,
-    gender INTEGER,
-    phone VARCHAR,
     email VARCHAR,
     password VARCHAR,
     created_at TIMESTAMP,
