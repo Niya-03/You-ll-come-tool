@@ -15,17 +15,22 @@ body {
 
 /* Header styling */
 header {
+    position: fixed;
+    width: 98%;
+    z-index:3;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #FFFFFF;
-    padding: 15px 20px;
+    padding: 10px 15px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    height: 85px;
 }
 
 /* Navigation bar styling */
 nav {
+    height: 60px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -47,7 +52,7 @@ nav a {
     margin: 0 15px;
     font-weight: 600;
     transition: color 0.3s, transform 0.3s;
-    font-size: 20px;
+    font-size: 35px;
     /* Increased font size for navigation links */
 }
 
@@ -216,4 +221,14 @@ section {
     color: #ffffff;
 
 
+}
+
+#logo-img{
+    height: 80px;
+    width: 90px;
+}
+
+#logo-text{
+    font-style: italic;
+    font-size: 35px;
 }

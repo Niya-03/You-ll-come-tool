@@ -1,45 +1,87 @@
-div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
-  }
-
-  img{
-    width: 60px;
-  }
-
-/* body{
-    background-color: rgb(143, 209, 209)
-} */
-
-#signin-header{
-    /* color: rgb(144, 33, 112); */
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
-
+/* General Reset */
+body, h1, div, input, button {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* Page styling */
+body {
+  font-family: 'Teko', sans-serif; /* Use your preferred font */
+  background-color: #F5F5F5; /* Light background for contrast */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Full height for vertical centering */
+}
+
+/* Logo styling */
+img {
+  width: 150px; /* Adjust based on your logo size */
+  margin-bottom: 20px; /* Space between logo and header */
+}
+
+/* Header styling */
+#signin-header {
+  font-size: 36px;
+  color: #023047; /* Dark color for readability */
+  margin-bottom: 20px; /* Space below header */
+}
+
+/* Form container styling */
+div {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  max-width: 400px; /* Limit width for better layout */
+  width: 100%; /* Responsive width */
+}
+
+/* Input styling */
+input[type="email"],
+input[type="password"] {
+  width: 100%; /* Full width inputs */
+  padding: 10px; /* Padding for comfort */
+  margin: 10px 0; /* Space between inputs */
+  border: 1px solid #219EBC; /* Use a main color for borders */
+  border-radius: 5px; /* Slightly rounded corners */
+  font-size: 16px; /* Increase font size for readability */
+}
+
+/* Button styling */
 button {
-    background-color: #04AA6D; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 10%;
-  }
+  width: 100%; /* Full width button */
+  padding: 10px;
+  background-color: #FFB703; /* Main color for button */
+  color: white; /* White text for contrast */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 18px; /* Increase font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth transition */
+}
 
-  .field{
-    text-align: left;
-  }
+button:hover {
+  background-color: #FB8500; /* Darker shade on hover */
+}
 
-  #error-msg {
-    color:red;
-    text-align: center;
-    display: none;
-  }
+/* Error message styling */
+#error-msg {
+  color: red; /* Color for error messages */
+  margin: 10px 0; /* Space above and below error message */
+  display: none; /* Hidden by default, show only on error */
+}
+
+/* Link styling */
+a {
+  color: #219EBC; /* Link color */
+  text-decoration: none; /* Remove underline */
+  margin-top: 10px; /* Space above link */
+  display: block; /* Block level for better spacing */
+}
+
+a:hover {
+  text-decoration: underline; /* Underline on hover */
+}
