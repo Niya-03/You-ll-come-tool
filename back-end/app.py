@@ -1,14 +1,20 @@
-from flask import Flask, json, request, Response
+from flask import Flask, json, render_template, request, Response
 from datetime import datetime
 from entities import User
 
 app = Flask("app")
 
+TRIPS_DATA = [
+    {"id": 1, "name": "Trip to Paris", "creator": "Alice", "destination": "Paris", "start_date": "2024-05-01", "end_date": "2024-05-07", "flights": [{"depart_city": "New York", "depart_time": "08:00", "arrive_city": "Paris", "arrive_time": "20:00", "price": "$500"}]},
+    {"id": 2, "name": "Trip to Tokyo", "creator": "Bob", "destination": "Tokyo", "start_date": "2024-06-10", "end_date": "2024-06-20", "flights": [{"depart_city": "Los Angeles", "depart_time": "10:00", "arrive_city": "Tokyo", "arrive_time": "22:00", "price": "$800"}]},
+    # More trips...
+]
 
-@app.route("/", methods=["GET"])
-def home():
-    print("Hello")
-    return "<h1>hello world</h1>"
+@app.route('/')
+def index():
+    # Render the index with dashboard content
+    return render_template('dashboard.html', trips=TRIPS_DATA)
+    
 
 
 @app.route("/version", methods=["GET"])
@@ -18,6 +24,7 @@ def version():
 
 @app.route("/signin", methods=["GET", "POST"])
 def signin():
+    
     # 1. receive data
     print(request)
     body = request.json

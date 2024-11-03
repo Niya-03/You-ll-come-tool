@@ -1,0 +1,16 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div id="dashboard">
+    <h1>All Trips</h1>
+    <div id="trips-container">
+        {% for trip in trips %}
+            <div class="trip-box">
+                <h3>{{ trip.name }}</h3>
+                <p>Created by {{ trip.creator }}</p>
+                <a href="/trip/{{ trip.id }}" class="details-btn">Details</a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,87 +1,106 @@
-/* General Reset */
-body, h1, div, input, button {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Page styling */
-body {
-  font-family: 'Teko', sans-serif; /* Use your preferred font */
-  background-color: #F5F5F5; /* Light background for contrast */
+#login {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 100vh; /* Full height for vertical centering */
+  background-color: #8ECAE6;
+  padding: 40px 20px;
+  border-radius: 10px;
+  max-width: 400px;
+  margin: 40px auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: #023047;
 }
 
-/* Logo styling */
-img {
-  width: 150px; /* Adjust based on your logo size */
-  margin-bottom: 20px; /* Space between logo and header */
+#signin-logo {
+  width: 100px;
+  height: auto;
+  margin-bottom: 20px;
 }
 
-/* Header styling */
 #signin-header {
-  font-size: 36px;
-  color: #023047; /* Dark color for readability */
-  margin-bottom: 20px; /* Space below header */
+  font-size: 32px;
+  color: #023047;
+  margin-bottom: 20px;
+  font-family: 'Teko', sans-serif;
 }
 
-/* Form container styling */
-div {
-  background-color: white;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  max-width: 400px; /* Limit width for better layout */
-  width: 100%; /* Responsive width */
+.signin-div {
+  width: 100%;
+  
 }
 
-/* Input styling */
+form {
+  
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 95%;
+}
+
+form div {
+  
+  display: flex;
+  flex-direction: column;
+  
+}
+
 input[type="email"],
 input[type="password"] {
-  width: 100%; /* Full width inputs */
-  padding: 10px; /* Padding for comfort */
-  margin: 10px 0; /* Space between inputs */
-  border: 1px solid #219EBC; /* Use a main color for borders */
-  border-radius: 5px; /* Slightly rounded corners */
-  font-size: 16px; /* Increase font size for readability */
-}
-
-/* Button styling */
-button {
-  width: 100%; /* Full width button */
+  font-size: 18px;
   padding: 10px;
-  background-color: #FFB703; /* Main color for button */
-  color: white; /* White text for contrast */
-  border: none; /* Remove default border */
-  border-radius: 5px; /* Rounded corners */
-  font-size: 18px; /* Increase font size */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition */
+  border: 2px solid #FFB703;
+  border-radius: 5px;
+  background-color: #ffffff;
+  color: #023047;
+  font-family: 'Teko', sans-serif;
+  transition: border-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #FB8500; /* Darker shade on hover */
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: #219EBC;
+  outline: none;
 }
 
-/* Error message styling */
+#next-btn {
+  padding: 12px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #FB8500;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Teko', sans-serif;
+  transition: background-color 0.3s ease;
+  margin-left: 2%;
+}
+
+#next-btn:hover {
+  background-color: #FFB703;
+}
+
 #error-msg {
-  color: red; /* Color for error messages */
-  margin: 10px 0; /* Space above and below error message */
-  display: none; /* Hidden by default, show only on error */
+  display: none;
+  color: #FB8500;
+  font-size: 16px;
+  font-family: 'Teko', sans-serif;
+  margin-top: 10px;
 }
 
-/* Link styling */
-a {
-  color: #219EBC; /* Link color */
-  text-decoration: none; /* Remove underline */
-  margin-top: 10px; /* Space above link */
-  display: block; /* Block level for better spacing */
+#error-msg h4 {
+  margin: 0;
 }
 
-a:hover {
-  text-decoration: underline; /* Underline on hover */
+form a {
+  color: #219EBC;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+  font-family: 'Teko', sans-serif;
+  
+}
+
+form a:hover {
+  color: #FB8500;
 }
