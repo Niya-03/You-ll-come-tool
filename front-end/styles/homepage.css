@@ -1,0 +1,90 @@
+
+
+#home {
+    background-color: #023047;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 600px;
+    width: 100%; /* Full width of the viewport */
+    text-align: center;
+    max-width: none;
+}
+
+.intro-block {
+    width: 100%; /* Full width */
+    padding: 60px 0;
+    background-color: rgba(2, 48, 71, 0.9);
+    
+}
+
+.intro-block h1 {
+    font-size: 60px;
+    font-weight: bold;
+    color: #FFFFFF;
+    
+}
+
+/* Parallax Airplane Section */
+#airplane-section {
+    position: relative;
+    height: 100vh;
+    width: 100vw; /* Full width of the viewport */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    overflow: hidden;
+    margin-top: 0px;
+    max-width: none;
+}
+
+/* Parallax Background */
+#airplane-section .parallax-background {
+    background-image: url('/front-end/images/airplane.jpg'); /* Replace with your airplane image path */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Airplane Section Content */
+.airplane-content {
+    background-color: rgba(255, 183, 3, 0.8); /* Partial overlay */
+    padding: 40px;
+    border-radius: 8px;
+    text-align: left;
+    max-width: 600px;
+    z-index: 1;
+}
+
+.airplane-content h2 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.airplane-content p {
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.check-trips-btn {
+    background-color: #FB8500;
+    color: #FFFFFF;
+    font-size: 24px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.check-trips-btn:hover {
+    background-color: #ff9f1c;
+}
