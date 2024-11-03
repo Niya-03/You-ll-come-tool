@@ -1,0 +1,128 @@
+.detailBox,
+.flight-options,
+.extra-transport,
+.accommodation,
+.other-expenses {
+    background-color: #FFFFFF;
+    border: 2px solid #FFB703;
+    /* Set all elements' borders to #FFB703 */
+    border-radius: 8px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.detailBox {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+#usertrip {
+    font-style: italic;
+}
+
+/* Flight options styling */
+.flight-options {
+    border: 2px solid #FFB703;
+    /* Use #FFB703 for flight options border */
+}
+
+/* Flight box styling */
+.flight-box {
+    position: relative;
+    padding: 10px 10px 10px 80px;
+    /* Space for the box title on the left */
+    border: 1px solid #FFB703;
+    /* Lighter yellow for flight boxes */
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    /* Light background for the boxes */
+}
+
+/* Title styling */
+.box-title {
+    transform: rotate(-90deg);
+    position: absolute;
+    top: 35%;
+    left: 8px;
+    font-weight: bold;
+    width: 60px;
+    text-align: left;
+    font-size: 24px;
+    /* Increased font size for box title */
+}
+
+/* Details styling */
+.details {
+    display: inline-block;
+    flex-direction: column;
+    width: calc(50% - 10px);
+}
+
+.details p {
+    margin: 2px 0;
+    font-size: 20px;
+    /* Increased font size for details */
+}
+
+/* Divider styling */
+.divider {
+    border-top: 1px solid #ddd;
+    margin: 8px 0;
+}
+
+/* Price styling */
+.price {
+    font-weight: bold;
+    font-size: 20px;
+    /* Increased font size for price */
+    text-align: left;
+}
+
+/* Extra transport and accommodation styling */
+.extra-transport,
+.accommodation,
+.other-expenses {
+    display: block;
+    margin-bottom: 20px;
+    max-width: 400px;
+}
+
+/* Row styling */
+.transport-row,
+.accommodation-row,
+.expenses-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.transport-row:last-child,
+.expenses-row:last-child {
+    border-bottom: none;
+}
+
+/* Plus button styling */
+.add-row-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    /* Increased font size for plus button */
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #219EBC;
+    color: #219EBC;
+    background-color: #FFFFFF;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.2s;
+}
+
+.add-row-button:hover {
+    background-color: #219EBC;
+    color: white;
+}

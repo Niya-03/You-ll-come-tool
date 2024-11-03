@@ -1,4 +1,4 @@
-#login {
+#login, #register {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,24 +9,28 @@
   margin: 40px auto;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   color: #023047;
+  margin-top: 160px;
 }
 
-#signin-logo {
+#register{
+  height: 70%
+}
+
+#signin-logo, #signup-logo {
   width: 100px;
   height: auto;
   margin-bottom: 20px;
 }
 
-#signin-header {
+#signin-header, #signup-header {
   font-size: 32px;
   color: #023047;
   margin-bottom: 20px;
   font-family: 'Teko', sans-serif;
 }
 
-.signin-div {
+.signin-div, .signup-div {
   width: 100%;
-  
 }
 
 form {
@@ -44,6 +48,12 @@ form div {
   
 }
 
+form p{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+input[type="text"],
 input[type="email"],
 input[type="password"] {
   font-size: 18px;
@@ -54,17 +64,26 @@ input[type="password"] {
   color: #023047;
   font-family: 'Teko', sans-serif;
   transition: border-color 0.3s ease;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
+input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus {
   border-color: #219EBC;
   outline: none;
 }
 
+input[type="checkbox"]{
+  margin: none;
+  display: inline-block;
+}
+
 #next-btn {
   padding: 12px;
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bold;
   color: #ffffff;
   background-color: #FB8500;

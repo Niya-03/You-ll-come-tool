@@ -1,0 +1,116 @@
+/* Import Teko font */
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@400&display=swap');
+
+/* Body styling */
+html,
+body {
+    font-family: 'Teko', sans-serif;
+    background-color: #9adae5a5;
+    margin: 0;
+    padding: 0px;
+    font-size: 18px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Header styling */
+header {
+    position: fixed;
+    width: 98%;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #FFFFFF;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    height: 85px;
+    margin-bottom: 20px;
+}
+
+/* Navigation bar styling */
+nav {
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+nav div {
+    display: flex;
+}
+
+nav .user,
+nav .guest {
+    display: flex;
+}
+
+nav a {
+    color: #219EBC;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: 600;
+    transition: color 0.3s, transform 0.3s;
+    font-size: 35px;
+    /* Increased font size for navigation links */
+}
+
+nav a:hover {
+    color: #FB8500;
+    transform: scale(1.05);
+}
+
+/* Main section styling */
+main {
+    margin-top: -5px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    background-color: #9adae5a5;
+}
+
+/* Section styling */
+section {
+    margin-top: 110px;
+    max-width: 800px;
+    width: 100%;
+    
+}
+
+/* General box styling */
+
+
+/* Footer styling */
+.footer {
+    position: relative;
+    width: 100%;
+    display: block;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 20px;
+    border-top: 2px solid #FFB703;
+    margin-top: auto;
+    background-color: #246383;
+
+    color: #ffffff;
+
+
+}
+
+#logo-img {
+    height: 80px;
+    width: 90px;
+}
+
+#logo-text {
+    font-style: italic;
+    font-size: 35px;
+}

@@ -28,7 +28,7 @@ const loginTemplate = () => html `
             </section>
 
             <div>
-                If you dont have an account, sign up <a href="">here</a>
+                <p>If you dont have an account, sign up <a href="/register">here</a></p>
             </div>
 
         </form>
