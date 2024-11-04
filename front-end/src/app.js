@@ -5,7 +5,8 @@ import { showDetailsView } from './views/details.js';
 import { showLoginView } from './views/login.js';
 import { showRegisterView } from './views/register.js';
 import { showaddTripView } from './views/addTrip.js';
-// updateNav();
+import { clearUserData, updateNav } from './util.js';
+ updateNav();
 
 page('/',showHomeView);
 page('/alltrips', showDashboardView);
@@ -18,7 +19,8 @@ page('/add', showaddTripView);
 
 page.start();
 
-// document.getElementById('logoutBtn').addEventListener('click', async () => {
-//     await userApi.logout(); 
-//     page.redirect('/');
-//     updateNav();});
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+    // await userApi.logout(); 
+    clearUserData();
+    page.redirect('/');
+    updateNav();});
