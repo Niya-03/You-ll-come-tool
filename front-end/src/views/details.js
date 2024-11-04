@@ -65,14 +65,7 @@ const detailsTemplate = () => html `
                 <p class="text-field">Bus: </p>
                 <span class="transport-price">Price: </span>
             </div>
-
-            <!-- Empty row for adding new transport entries -->
-            <div id="transportRows"></div>
-
-            <!-- Add button at the bottom -->
-            <div class="transport-row">
-                <div class="add-row-button" onclick="addTransportRow()">+</div>
-            </div>
+            
         </div>
 
         <div class="accommodation">

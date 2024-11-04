@@ -1,0 +1,104 @@
+/* Styling for the Add Trip Section */
+#addTrip {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f4f4f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 150px;
+}
+
+#addTrip h2 {
+    text-align: center;
+    font-size: 28px;
+    color: #023047;
+    font-family: 'Teko', sans-serif;
+    margin-bottom: 20px;
+}
+
+/* Collapsible Details Styling */
+#addTrip details {
+    margin-bottom: 15px;
+    padding: 15px;
+    border: 1px solid #FFB703;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+#addTrip details summary {
+    font-size: 22px;
+    font-weight: bold;
+    color: #023047;
+    cursor: pointer;
+    font-family: 'Teko', sans-serif;
+}
+
+#addTrip details[open] summary {
+    color: #FB8500;
+}
+
+#addTrip form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+/* Form Labels and Inputs */
+#addTrip form label {
+    font-size: 18px;
+    color: #023047;
+    font-family: 'Teko', sans-serif;
+    margin-bottom: 5px;
+}
+
+#addTrip form input[type="text"],
+#addTrip form input[type="email"],
+#addTrip form input[type="date"],
+#addTrip form input[type="file"],
+#addTrip form input[type="number"],
+#addTrip form input[type="url"],
+#addTrip form input[type="datetime-local"] {
+    padding: 10px;
+    border: 2px solid #FFB703;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #023047;
+    font-family: 'Teko', sans-serif;
+    background-color: #ffffff;
+    transition: border-color 0.3s ease;
+}
+
+#addTrip form input:focus {
+    border-color: #219EBC;
+    outline: none;
+}
+
+/* Button Styling */
+#addTrip button {
+    padding: 10px 20px;
+    font-size: 18px;
+    color: #ffffff;
+    background-color: #FB8500;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Teko', sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+#addTrip button:hover {
+    background-color: #FFB703;
+}
+
+/* Transport Rows */
+.transport-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.transport-row input {
+    flex: 1;
+}
