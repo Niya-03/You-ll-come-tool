@@ -2,14 +2,14 @@ import { html, render } from '../lib.js';
 import { page } from '../lib.js';
 import { updateNav } from '../util.js';
 
-const registerTemplate = () => html`
+const registerTemplate = (signup) => html`
 <section id="register">
     <img id="signup-logo" src="./front-end/images/logo.png">
     <h1 id="signup-header">
         Sign Up
     </h1>
     <div class="signup-div">
-        <form id="signup-form">
+        <form @submit=${signup} id="signup-form">
             <div>
                 <input id="firstname" type="text" placeholder="First name"></input>
             </div>
@@ -40,43 +40,23 @@ const registerTemplate = () => html`
     <section>
 `;
 
+
+
 export function showRegisterView(ctx) {
     console.log("this is register")
-    render(registerTemplate());
+    render(registerTemplate(signup));
 }
 
-if(localStorage.getItem('user') == null){
-    const user = {
-                firstName: undefined,
-                lastName: undefined,
-                email: undefined,
-                password: undefined,
-            };
-        
-}else{
-    let user = localStorage.getItem('user');
-    user = JSON.parse();
-}
 
-// let user = localStorage.getItem('user');
 
-// if (!user) {
-//     const user = {
-//         firstName: undefined,
-//         lastName: undefined,
-//         email: undefined,
-//         password: undefined,
-//     };
-// } else {
-//     user = JSON.parse();
+// const registerBtn = document.getElementById('next-btn');
+// registerBtn.addEventListener('click', signup)
+
+
+// const form = document.getElementById('signup-form');
+// if (form) {
+//     form.addEventListener('submit', signup);
 // }
-
-
-
-const form = document.getElementById('signup-form');
-if (form) {
-    form.addEventListener('submit', signup);
-}
 
 
 
@@ -88,6 +68,22 @@ function stopFormDefault(event) {
 
 function signup(e) {
     e.preventDefault();
+
+    let user;
+
+    if(localStorage.getItem('user') == null){
+         user = {
+                    firstName: undefined,
+                    lastName: undefined,
+                    email: undefined,
+                    password: undefined,
+                };
+            
+    }else{
+        user = localStorage.getItem('user');
+        user = JSON.parse();
+    }
+
     const password = document.getElementById('reg-password');
     const confirmPassword = document.getElementById('confirm-password');
 
@@ -115,7 +111,15 @@ function signup(e) {
     user.password = password.value;
 
 
-    console.log(user)
+    const url = "http://127.0.0.1:5001/signup"
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user)
+    };
+    fetch(url, options).then(responseArrived).then(responseBodyReceived).catch(errorHappened);
 
     localStorage.setItem('user', JSON.stringify(user));
 
@@ -123,4 +127,26 @@ function signup(e) {
     updateNav();
     page.redirect('/');
 
+}
+
+function responseBodyArrived(response){
+    console.log(response);
+}
+
+function responseArrived(response) {
+    if (!response.ok) {
+        throw new Error("Failed to get data.");
+    }
+    return response.json();
+}
+
+function responseBodyReceived(response) {
+    window.localStorage.setItem('user-id', response.data.id);
+    window.localStorage.setItem('user-first-name', response.data.first_name);
+    window.location.replace("signup-2.html");
+}
+
+function errorHappened(response) {
+    console.log("Error!!!");
+    console.log(response);
 }
