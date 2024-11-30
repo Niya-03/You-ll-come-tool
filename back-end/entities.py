@@ -227,28 +227,28 @@ class UserFile:
 if __name__ == "__main__":
     from storage import connect
 
-    # user = User()
-    # user.first_name = "User 1 FN"
-    # user.last_name = "User 1 LN"
-    # user.email = "user1@email.com"
-    # user.phone = "+748777777"
-    # user.is_active = 1
-    # user.password = "123456789"
-    # user.created_at = datetime.now().timestamp()
-    # user.updated_at = datetime.now().timestamp()
-    # user.dob = datetime.now().timestamp()
-    # user.gender = 0
+    user = User()
+    user.first_name = "User 1 FN"
+    user.last_name = "User 1 LN"
+    user.email = "user1@email.com"
+    user.phone = "+748777777"
+    user.is_active = 1
+    user.password = "123456789"
+    user.created_at = datetime.now().timestamp()
+    user.updated_at = datetime.now().timestamp()
+    user.dob = datetime.now().timestamp()
+    user.gender = 0
 
-    # connection = connect()
-    # user.insert(connection)
+    connection = connect()
+    user.insert(connection)
 
-    # connection = connect()
-    # user.id = 1
-    # u = user.get(connection)
-    # print(u) 
+    connection = connect()
+    user.id = 1
+    u = user.get(connection)
+    print(u) 
     
-    # print(u.to_dict())
-    # print(u.to_json())
+    print(u.to_dict())
+    print(u.to_json())
     
     
     # file = UserFile()
