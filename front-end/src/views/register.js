@@ -66,7 +66,7 @@ function stopFormDefault(event) {
     console.log('Form submission cancelled.');
 }
 
-function signup(e) {
+async function signup(e) {
     e.preventDefault();
 
     let user;
@@ -80,8 +80,7 @@ function signup(e) {
                 };
             
     }else{
-        user = localStorage.getItem('user');
-        user = JSON.parse();
+        user = JSON.parse(localStorage.getItem('user'));
     }
 
     const password = document.getElementById('reg-password');
@@ -119,34 +118,26 @@ function signup(e) {
         },
         body: JSON.stringify(user)
     };
-    fetch(url, options).then(responseArrived).then(responseBodyReceived).catch(errorHappened);
+    
+    try {
+        debugger;
+        let response = await fetch(url, options);       
 
-    localStorage.setItem('user', JSON.stringify(user));
+        let result = await response.json()
 
-    //window.location.replace('signup-2.html');
-    updateNav();
-    page.redirect('/');
+        if(!response.ok){
+            debugger;
+            throw new Error(result.error)
+        }else{
+            localStorage.setItem('user', JSON.stringify(user))
+        updateNav();
+        page.redirect('/');
+        }
 
-}
-
-function responseBodyArrived(response){
-    console.log(response);
-}
-
-function responseArrived(response) {
-    if (!response.ok) {
-        throw new Error("Failed to get data.");
+        
+    } catch (error) {
+        alert(error)
     }
-    return response.json();
+    
 }
 
-function responseBodyReceived(response) {
-    window.localStorage.setItem('user-id', response.data.id);
-    window.localStorage.setItem('user-first-name', response.data.first_name);
-    window.location.replace("signup-2.html");
-}
-
-function errorHappened(response) {
-    console.log("Error!!!");
-    console.log(response);
-}

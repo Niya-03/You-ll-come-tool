@@ -1,7 +1,9 @@
 import {html, render} from '../lib.js';
 import { updateNav } from '../util.js';
+import { page } from '../lib.js';
 
-const loginTemplate = () => html `
+
+const loginTemplate = (signin) => html `
     <section id="login">
     <img src="./front-end/images/logo.png" id="signin-logo">
     <h1 id="signin-header">
@@ -9,7 +11,7 @@ const loginTemplate = () => html `
     </h1>
     <div class="signin-div">
 
-        <form id="login-form">
+        <form @submit=${signin} id="login-form">
             <div>
                 <input id="login-email" type="email" placeholder="Email"></input>
             </div>
@@ -41,40 +43,12 @@ const loginTemplate = () => html `
 
 export function showLoginView(ctx){
     console.log("this is login")
-    render(loginTemplate());
-}
-
-const USERS = [
-    {
-        "email": "a@b.c",
-        "password": "123"
-    },
-    {
-        "email": "d@b.c",
-        "password": "123"
-    }, {
-        "email": "e@b.c",
-        "password": "123"
-    }, {
-        "email": "f@b.c",
-        "password": "123"
-    },
-];
-
-
-//1. Capture user input
-//2. Check if user exists
-//3. check if user credentials match provided details
-//4. if match => go to home lese go to signin fail
-
-
-const loginform = document.getElementById('login-form');
-if (loginform) {
-    loginform.addEventListener('submit', signin);
+    render(loginTemplate(signin));
 }
 
 
-function signin(e) {
+
+async function signin(e) {
     e.preventDefault();
     const errorParagraph = document.getElementById("errorMessage");
     errorParagraph.innerText = "";
@@ -82,21 +56,47 @@ function signin(e) {
     const password = document.getElementById('login-password');
 
     if (email.value == "" || password.value == "") {
-        return;
+        return alert("Fill all fields!");
     }
 
-    for (let user of USERS) {
-        if (user.email == email.value) {
-            if (user.password == password.value) {
-                updateNav();
-                //page.redirect('/');
-                
-            }
+    const user = {
+        email: email.value,
+        password: password.value
+    }
+
+    const options = {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user)
+    }
+
+    const url = 'http://127.0.0.1:5001/signin';
+
+    try {
+        
+        const response = await fetch(url, options);
+
+        if(!response.ok){
+            throw new Error(response.json())
         }
+        debugger;
+        const result = await response.json();
+
+        localStorage.setItem('user', JSON.stringify({'email':result.data.email ,'firstName':result.data.firstName}));
+        updateNav();
+        page.redirect('/');
+
+    } catch (error) {
+        console.log(error)
     }
 
 
     errorParagraph.innerHTML = "invalid user credentials";
     errorParagraph.style.color = 'red';
+
+  
+    
 
 }
