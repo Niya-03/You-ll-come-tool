@@ -20,6 +20,5 @@ const homeTemplate = () => html `
 `;
 
 export function showHomeView(ctx){
-    console.log("this is home")
     render(homeTemplate());
 }

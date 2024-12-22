@@ -1,18 +1,18 @@
 import {html, render} from '../lib.js';
 
-const detailsTemplate = () => html `
+const detailsTemplate = (data) => html `
     <section id="details">
     <div class="container">
         <div class="detailBox">
-            <h2><i>Niya's trip</i></h2>
+            <h2><i>${data.ownerFirstName}'s trip</i></h2>
         </div>
 
         <div class="detailBox">
-            <h2>Destination: Milano</h2>
+            <h2>Destination: ${data.destination}</h2>
         </div>
 
         <div class="detailBox">
-            <h2>Dates: 01.01.25 - 04.01.25</h2>
+            <h2>Dates: ${data.startDate} - ${data.endDate}</h2>
         </div>
 
         <div class="flight-options">
@@ -22,16 +22,16 @@ const detailsTemplate = () => html `
                 <div class="box-title">Going</div>
                 <div class="details">
                     <p>Departs:</p>
-                    <p>City:</p>
-                    <p>Hour:</p>
+                    <p>City: ${data.goingFlight.departCity}</p>
+                    <p>Hour: ${data.goingFlight.departHour}</p>
                 </div>
                 <div class="details">
                     <p>Arrives:</p>
-                    <p>City:</p>
-                    <p>Hour:</p>
+                    <p>City: ${data.goingFlight.arriveCity}</p>
+                    <p>Hour: ${data.goingFlight.arriveHour}</p>
                 </div>
                 <div class="divider"></div>
-                <div class="price">Price:</div>
+                <div class="price">Price: ${data.goingFlight.price}</div>
             </div>
 
             <!-- Return Box -->
@@ -39,16 +39,16 @@ const detailsTemplate = () => html `
                 <div class="box-title">Return</div>
                 <div class="details">
                     <p>Departs:</p>
-                    <p>City:</p>
-                    <p>Hour:</p>
+                    <p>City: ${data.returnFlight.departCity}</p>
+                    <p>Hour: ${data.returnFlight.departHour}</p>
                 </div>
                 <div class="details">
                     <p>Arrives:</p>
-                    <p>City:</p>
-                    <p>Hour:</p>
+                    <p>City: ${data.returnFlight.arriveCity}</p>
+                    <p>Hour: ${data.returnFlight.arriveHour}</p>
                 </div>
                 <div class="divider"></div>
-                <div class="price">Price:</div>
+                <div class="price">Price: ${data.returnFlight.price}</div>
             </div>
         </div>
 
@@ -58,12 +58,8 @@ const detailsTemplate = () => html `
 
             <!-- Transport rows -->
             <div class="transport-row">
-                <p class="text-field">Metro: </p>
-                <span class="transport-price">Price: </span>
-            </div>
-            <div class="transport-row">
-                <p class="text-field">Bus: </p>
-                <span class="transport-price">Price: </span>
+                <p class="text-field">Type: ${data.extraTransportDetails.name}</p>
+                <span class="transport-price">Price: ${data.extraTransportDetails.price}</span>
             </div>
             
         </div>
@@ -72,23 +68,33 @@ const detailsTemplate = () => html `
             <h3>Accommodation</h3>
             <!-- Row for place -->
             <div class="accommodation-row">
-                <p class="text-field">Place: The Old Town</p>
+                <p class="text-field">Place: ${data.accomodation.place}</p>
             </div>
             <!-- Row for price -->
             <div class="accommodation-row">
-                <p class="text-field">Price: 250 euro</p>
+                <p class="text-field">Price: ${data.accomodation.price} euro</p>
             </div>
             <!-- Row for link -->
             <div class="accommodation-row">
-                <p class="text-field">Link: <a href="https://example.com"
-                        target="_blank">https://example.com</a></p>
+                <p class="text-field">Link: <a href=${data.accomodation.link}
+                        target="_blank">${data.accomodation.link}</a></p>
             </div>
         </div>
     </div>
 </section>
 `;
 
-export function showDetailsView(ctx){
-    console.log("this is details")
-    render(detailsTemplate());
+export async function showDetailsView(ctx){
+    const tripId = ctx.params.tripId;
+    const url = 'http://127.0.0.1:5001/details/' + tripId;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log(data)
+
+        render(detailsTemplate(data));
+    } catch (error) {
+        return alert(error);
+    }
+    
 }

@@ -10,7 +10,7 @@ import { clearUserData, updateNav } from './util.js';
 
 page('/',showHomeView);
 page('/alltrips', showDashboardView);
-page('/details', showDetailsView);
+page('/details/:tripId', showDetailsView);
 page('/login', showLoginView);
 page('/register', showRegisterView);
 page('/add', showaddTripView);

@@ -43,7 +43,6 @@ const registerTemplate = (signup) => html`
 
 
 export function showRegisterView(ctx) {
-    console.log("this is register")
     render(registerTemplate(signup));
 }
 
@@ -129,7 +128,7 @@ async function signup(e) {
             debugger;
             throw new Error(result.error)
         }else{
-            localStorage.setItem('user', JSON.stringify(user))
+            localStorage.setItem('user', JSON.stringify({'email':result.data.email, 'userId':result.data.userId}))
         updateNav();
         page.redirect('/');
         }

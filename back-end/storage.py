@@ -62,13 +62,12 @@ connection.close()
 
 query = """CREATE TABLE IF NOT EXISTS trips(
     tripId INTEGER PRIMARY KEY AUTOINCREMENT,
-    destination VARCHAR(40) NOT NULL,
-    start_date DATE NOT NULL,
-    end_date DATE NOT NULL,
-    ownerId INTEGER NOT NULL,
-    flight_options_id INTEGER NOT NULL,
-    FOREIGN KEY (ownerId) REFERENCES users(userId),
-    FOREIGN KEY (flight_options_id) REFERENCES flight_options(flight_options_id)
+    destination VARCHAR(40) ,
+    start_date DATE,
+    end_date DATE ,
+    ownerId INTEGER ,
+    tripImage BLOB,
+    FOREIGN KEY (ownerId) REFERENCES users(userId)
     );
 """
     
@@ -83,7 +82,9 @@ cursor.close()
 connection.close()
 
 query = """CREATE TABLE IF NOT EXISTS flight_options(
-    flight_options_id INTEGER PRIMARY KEY AUTOINCREMENT
+    flight_options_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tripId INTEGER,
+    FOREIGN KEY (tripId) REFERENCES trips(tripId)
     );
 """
 
@@ -99,12 +100,12 @@ connection.close()
    
 query = """CREATE TABLE IF NOT EXISTS going_fl(
     goingId INTEGER constraint GOING_PK PRIMARY KEY AUTOINCREMENT,
-    depart_city VARCHAR(40) NOT NULL,
-    depart_hour VARCHAR(5) NOT NULL,
-    arrive_city VARCHAR(40) NOT NULL,
-    arrive_hour VARCHAR(5) NOT NULL,
-    price DECIMAL(5,2) NOT NULL,
-    flight_options_id INTEGER NOT NULL,
+    g_depart_city VARCHAR(40) ,
+    g_depart_hour VARCHAR(5) ,
+    g_arrive_city VARCHAR(40) ,
+    g_arrive_hour VARCHAR(5) ,
+    g_price DECIMAL(5,2) ,
+    flight_options_id INTEGER ,
     FOREIGN KEY (flight_options_id) REFERENCES flight_options(flight_options_id) ON DELETE CASCADE
     );
 """
@@ -122,12 +123,12 @@ connection.close()
   
 query = """CREATE TABLE IF NOT EXISTS return_fl(
     returnId INTEGER PRIMARY KEY AUTOINCREMENT,
-    depart_city VARCHAR(40) NOT NULL,
-    depart_hour VARCHAR(5) NOT NULL,
-    arrive_city VARCHAR(40) NOT NULL,
-    arrive_hour VARCHAR(5) NOT NULL,
-    price DECIMAL(5,2) NOT NULL,
-    flight_options_id INTEGER NOT NULL,
+    r_depart_city VARCHAR(40) ,
+    r_depart_hour VARCHAR(5) ,
+    r_arrive_city VARCHAR(40) ,
+    r_arrive_hour VARCHAR(5) ,
+    r_price DECIMAL(5,2) ,
+    flight_options_id INTEGER ,
     FOREIGN KEY (flight_options_id) REFERENCES flight_options(flight_options_id) ON DELETE CASCADE
     );
 """
@@ -144,10 +145,10 @@ connection.close()
   
 query = """CREATE TABLE IF NOT EXISTS accomodation(
         accomodationId INTEGER PRIMARY KEY AUTOINCREMENT,
-        place VARCHAR(40) NOT NULL,
-        price DECIMAL(5,2) NOT NULL,
-        link VARCHAR(2083),
-        tripId INTEGER NOT NULL,
+        a_place VARCHAR(40) ,
+        a_price DECIMAL(5,2) ,
+        a_link VARCHAR(2083),
+        tripId INTEGER,
         FOREIGN KEY (tripId) REFERENCES trips(tripId) ON DELETE CASCADE
     );
 """
@@ -164,7 +165,7 @@ connection.close()
   
 query = """CREATE TABLE IF NOT EXISTS extra_transport(
     extra_transport_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    tripId INTEGER NOT NULL,
+    tripId INTEGER ,
     FOREIGN KEY (tripId) REFERENCES trips(tripId) ON DELETE CASCADE
     );
 """
@@ -181,9 +182,9 @@ connection.close()
 
 query = """CREATE TABLE IF NOT EXISTS extra_transport_details(
     extra_transport_detail_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name VARCHAR(40) NOT NULL,
-    price DECIMAL(5,2) NOT NULL,
-    extra_transport_id INTEGER NOT NULL,
+    e_trans_name VARCHAR(40) ,
+    e_trans_price DECIMAL(5,2) ,
+    extra_transport_id INTEGER ,
     FOREIGN KEY (extra_transport_id) REFERENCES extra_transport(extra_transport_id) ON DELETE CASCADE
     );
 """

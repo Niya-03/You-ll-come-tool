@@ -42,7 +42,6 @@ const loginTemplate = (signin) => html `
 `;
 
 export function showLoginView(ctx){
-    console.log("this is login")
     render(loginTemplate(signin));
 }
 
@@ -84,7 +83,7 @@ async function signin(e) {
         debugger;
         const result = await response.json();
 
-        localStorage.setItem('user', JSON.stringify({'email':result.data.email ,'firstName':result.data.firstName}));
+        localStorage.setItem('user', JSON.stringify({'email':result.data.email ,'userId':result.data.userId}));
         updateNav();
         page.redirect('/');
 

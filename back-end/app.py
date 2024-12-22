@@ -1,3 +1,4 @@
+import base64
 from sqlite3 import connect
 import sqlite3
 from flask import Flask, json, render_template, request, Response
@@ -79,7 +80,7 @@ def signin():
 
         # 4. Return a response with user details
         return Response(
-            json.dumps({"data": {"email": email_db, "firstName": first_name}}),
+            json.dumps({"data": {"email": email_db, "userId": userId}}),
             status=200,
             headers={"Content-Type": "application/json"},
         )
@@ -141,7 +142,7 @@ def signup():
         new_user_id = cursor.lastrowid  
 
         return Response(
-            json.dumps({"data": {"id": new_user_id, "first_name": user_data['first_name']}}),
+            json.dumps({"data": {"userId": new_user_id, "email": user_data['email']}}),
             status=200,
             headers={"Content-Type": "application/json"},
         )
@@ -164,48 +165,357 @@ def signup():
             connection.close()
 
     
-# def signup():
-#     body = request.json
-#     user = User()
-#     connection = None
+@app.route("/add", methods=["POST"])
+def add():
+    print(request.form)
+    destination = request.form.get('destination')
+    start_date = request.form.get('beginDate')
+    end_date = request.form.get('endDate')
+    g_depart_city = request.form.get('goingCity')
+    goingDeparture = request.form.get('goingDeparture')
+    g_arrive_city = request.form.get('goingArriveCity')
+    goingArrival = request.form.get('goingArrival')
+    g_price = request.form.get('goingPrice')
+    r_depart_city = request.form.get('returnCity')
+    returnDeparture = request.form.get('returnDeparture')
+    r_arrive_city = request.form.get('returnArrivalCity')
+    returnArrival = request.form.get('returnArrival')
+    r_price = request.form.get('returnPrice')
+    e_trans_name = request.form.get('transportName')
+    e_trans_price = request.form.get('transportPrice')
+    a_place = request.form.get('accomodationPlace')
+    a_price = request.form.get('accomodationPrice')
+    a_link = request.form.get('accomodationLink')
+    userId = request.form.get('userId')
 
-#     try:
-#         connection = connect(database='app.db')
-#         user.from_dict(body)
-#         user.get_by_email(dbconnection=connection, email=user.email)
+    g_depart_hour = goingDeparture.split('T')[1]
+    g_arrive_hour = goingArrival.split('T')[1]
+    r_depart_hour = returnDeparture.split('T')[1]
+    r_arrive_hour = returnArrival.split('T')[1]
+    tripImageFile = request.files.get('tripImage')
+    
+    if tripImageFile:
+        tripImage = tripImageFile.read()
+    else:
+        return Response(
+            json.dumps({"error": 'no image sent'}),
+            status=400,
+            headers={"Content-Type": "application/json"},
+        )
+    
+    #checking the dates are correct
+    
+    try:
+        start_date_dt = datetime.fromisoformat(start_date)
+        end_date_dt = datetime.fromisoformat(end_date)
+        goingDeparture_dt = datetime.fromisoformat(goingDeparture)
+        goingArrival_dt = datetime.fromisoformat(goingArrival)
+        returnDeparture_dt = datetime.fromisoformat(returnDeparture)
+        returnArrival_dt = datetime.fromisoformat(returnArrival)
+    except ValueError as e:
+        return Response(
+            json.dumps({"error": f"Invalid date format: {e}"}),
+            status=400,
+            headers={"Content-Type": "application/json"}
+        )
 
-#         if user.id is not None:
-#             return Response(
-#                 json.dumps({"error": "User already exists"}),
-#                 status=400,
-#                 headers={"Content-Type": "application/json"},
-#             )
+    errors = []
 
-#         user.is_active = 1
-#         user.created_at = datetime.now().timestamp()
-#         user.updated_at = user.created_at
 
-#         user.insert(dbconnection=connection)
-#         user.get_by_email(dbconnection=connection, email=user.email)
+    if start_date_dt >= end_date_dt:
+        errors.append("Start date must be before end date.")
 
-#         response = Response(
-#             json.dumps({"data": {"id": user.id, "first_name": user.first_name}}),
-#             status=200,
-#             headers={"Content-Type": "application/json"},
-#         )
-#     except Exception as e:
-#         print(e)
-#         response = Response(
-#             json.dumps({"error": f"Something went wrong. Cause: {e}."}),
-#             status=400,
-#             headers={"Content-Type": "application/json"},
-#         )
-#     finally:
-#         if connection:
-#             connection.close()
 
-#     return response
+    if goingDeparture_dt >= goingArrival_dt:
+        errors.append("Going departure must be before going arrival.")
 
+
+    if goingDeparture_dt >= returnDeparture_dt:
+        errors.append("Going departure must be before return departure.")
+    if goingDeparture_dt >= returnArrival_dt:
+        errors.append("Going departure must be before return arrival.")
+
+
+    if returnDeparture_dt >= returnArrival_dt:
+        errors.append("Return departure must be before return arrival.")
+
+
+    if errors:
+        return Response(
+            json.dumps({"errors": errors}),
+            status=400,
+            headers={"Content-Type": "application/json"}
+        )
+        
+    #enough checks
+    
+    try:
+        connection = connect(database="C:\\Users\\NIYA\\Desktop\\You'll come tool\\back-end\\app.db")
+        cursor = connection.cursor()
+
+        cursor.execute(
+            "INSERT INTO trips (destination, start_date, end_date, ownerId, tripImage) VALUES (?, ?, ?, ?, ?)",
+            (
+                destination, start_date, end_date, userId, tripImage
+            )
+        )
+        connection.commit()
+        
+        
+        tripId = cursor.lastrowid
+        tripId2 = tripId
+        
+        if tripId is None:
+            raise ValueError("Failed to retrieve lastrowid for the trip")
+                
+        connection = connect(database="C:\\Users\\NIYA\\Desktop\\You'll come tool\\back-end\\app.db")
+        cursor = connection.cursor()
+        
+        cursor.execute(
+            "INSERT INTO flight_options (tripId) VALUES (?)",
+            (tripId,)
+        ) 
+        
+        connection.commit()
+        flight_options_id = cursor.lastrowid
+        
+        connection = connect(database="C:\\Users\\NIYA\\Desktop\\You'll come tool\\back-end\\app.db")
+        cursor = connection.cursor()
+        
+        
+        cursor.execute(
+            "INSERT INTO going_fl (g_depart_city, g_depart_hour, g_arrive_city, g_arrive_hour, g_price, flight_options_id) VALUES (?, ?, ?, ?, ?, ?)",
+            (
+                g_depart_city, g_depart_hour, g_arrive_city, g_arrive_hour, g_price, flight_options_id,
+            )
+        )
+        
+        connection.commit()
+        
+        cursor.execute(
+            "INSERT INTO return_fl (r_depart_city, r_depart_hour, r_arrive_city, r_arrive_hour, r_price, flight_options_id) VALUES (?, ?, ?, ?, ?,?)",
+            (
+                r_depart_city, r_depart_hour, r_arrive_city, r_arrive_hour, r_price, flight_options_id,
+            )
+        )
+        
+        connection.commit()
+        
+        
+        
+        cursor.execute(
+            "INSERT INTO accomodation (a_place, a_price, a_link, tripId) VALUES (?, ?, ?, ?)",
+            (
+                a_place, a_price, a_link, tripId2
+            )
+        )
+        
+        connection.commit()
+        
+        cursor.execute(
+            "INSERT INTO extra_transport (tripId) VALUES (?)",
+            (
+                tripId,
+            )
+        )
+        
+        connection.commit()
+        
+        extra_transport_id = cursor.lastrowid
+        
+        cursor.execute(
+            "INSERT INTO extra_transport_details (e_trans_name,e_trans_price,extra_transport_id) VALUES (?,?,?)",
+            (
+                e_trans_name, e_trans_price, extra_transport_id
+            )
+        )
+        
+        connection.commit()
+              
+        
+        return Response(
+            json.dumps({"message": 'lesgo'}),
+            status=200,
+            headers={"Content-Type": "application/json"},
+        )
+        
+    except Exception as e:
+        return Response(
+            json.dumps({"error": e}),
+            status=500,
+            headers={"Content-Type": "application/json"},
+        )
+
+    finally:
+        if connection:
+            connection.close()
+            
+@app.route("/getAllTrips", methods=["GET"])
+def getAllTrips():
+    
+    try:
+        connection = connect(database="C:\\Users\\NIYA\\Desktop\\You'll come tool\\back-end\\app.db")
+        cursor = connection.cursor()
+
+        cursor.execute(
+            """SELECT trips.*, users.first_name, users.last_name
+                FROM trips
+                LEFT JOIN users
+                ON trips.ownerId = users.userId;"""
+        )
+        
+        rows = cursor.fetchall()
+
+        trips_data = []
+        
+        
+        for row in rows:
+            imageBlob = row[5]
+            image_base64 = base64.b64encode(imageBlob).decode('utf-8')
+            
+            trips_data.append({
+                "tripId": row[0],
+                "destination": row[1], 
+                "startDate": row[2],
+                "endDate": row[3],
+                "ownerId": row[4],
+                "image": f"data:image/jpeg;base64,{image_base64}",
+                "firstName": row[6],
+                "lastName": row[7]
+                           
+            })
+            
+        return Response(
+                json.dumps({"data": trips_data}),
+                status=200,
+                headers={"Content-Type": "application/json"},
+            )
+    except Exception as e:
+        return Response(
+            json.dumps({"error": e}),
+            status=500,
+            headers={"Content-Type": "application/json"},
+        )
+    finally:
+        if connection:
+            connection.close()
+
+@app.route("/details/<int:tripId>", methods=["GET"])
+def getTripDetails(tripId):
+    try:
+        connection = connect(database="C:\\Users\\NIYA\\Desktop\\You'll come tool\\back-end\\app.db")
+        cursor = connection.cursor()
+
+        query = """
+            SELECT 
+                trips.tripId,
+                trips.destination,
+                trips.start_date,
+                trips.end_date,
+                users.first_name AS owner_first_name,
+                users.last_name AS owner_last_name,
+                trips.tripImage AS trip_image,
+                going_fl.g_depart_city,
+                going_fl.g_depart_hour,
+                going_fl.g_arrive_city,
+                going_fl.g_arrive_hour,
+                going_fl.g_price,
+                return_fl.r_depart_city,
+                return_fl.r_depart_hour,
+                return_fl.r_arrive_city,
+                return_fl.r_arrive_hour,
+                return_fl.r_price,
+                accomodation.a_place,
+                accomodation.a_price,
+                accomodation.a_link,
+                extra_transport_details.e_trans_name,
+                extra_transport_details.e_trans_price
+            FROM 
+                trips
+            LEFT JOIN 
+                users ON trips.ownerId = users.userId
+            LEFT JOIN 
+                flight_options ON trips.tripId = flight_options.tripId
+            LEFT JOIN 
+                going_fl ON flight_options.flight_options_id = going_fl.flight_options_id
+            LEFT JOIN 
+                return_fl ON flight_options.flight_options_id = return_fl.flight_options_id
+            LEFT JOIN 
+                accomodation ON trips.tripId = accomodation.tripId
+            LEFT JOIN 
+                extra_transport ON trips.tripId = extra_transport.tripId
+            LEFT JOIN 
+                extra_transport_details ON extra_transport.extra_transport_id = extra_transport_details.extra_transport_id
+            WHERE 
+                trips.tripId = ?;
+            """
+        
+        cursor.execute(query,(tripId,))
+        
+        row = cursor.fetchone()
+        
+        if row:
+            
+            trip_image_base64 = None
+            if row[6]:
+                import base64
+                trip_image_base64 = base64.b64encode(row[6]).decode("utf-8")
+
+            trip_details = {
+                "tripId": row[0],
+                "destination": row[1],
+                "startDate": row[2],
+                "endDate": row[3],
+                "ownerFirstName": row[4],
+                "ownerLastName": row[5],
+                "tripImage": trip_image_base64,
+                "goingFlight": {
+                    "departCity": row[7],
+                    "departHour": row[8],
+                    "arriveCity": row[9],
+                    "arriveHour": row[10],
+                    "price": row[11],
+                },
+                "returnFlight": {
+                    "departCity": row[12],
+                    "departHour": row[13],
+                    "arriveCity": row[14],
+                    "arriveHour": row[15],
+                    "price": row[16],
+                },
+                "accomodation": {
+                    "place": row[17],
+                    "price": row[18],
+                    "link": row[19],
+                },
+                "extraTransportDetails": {
+                    "name": row[20],
+                    "price": row[21],
+                },
+            }
+
+            
+            return Response(
+                json.dumps({"data": trip_details}),
+                status=200,
+                headers={"Content-Type": "application/json"},
+            )
+        else:
+            return Response(
+            json.dumps({"error": 'Trip not found'}),
+            status=404,
+            headers={"Content-Type": "application/json"},
+        )
+        
+    except Exception as e:
+        return Response(
+            json.dumps({"error": e}),
+            status=500,
+            headers={"Content-Type": "application/json"},
+        )
+    finally:
+        if connection:
+            connection.close()
 
 if __name__ == "__main__":
     app.run(port=5001)
