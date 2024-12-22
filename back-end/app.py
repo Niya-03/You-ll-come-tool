@@ -189,9 +189,13 @@ def add():
     userId = request.form.get('userId')
 
     g_depart_hour = goingDeparture.split('T')[1]
+    g_depart_date = goingDeparture.split('T')[0]
     g_arrive_hour = goingArrival.split('T')[1]
+    g_arrive_date = goingArrival.split('T')[0]
     r_depart_hour = returnDeparture.split('T')[1]
+    r_depart_date = returnDeparture.split('T')[0]
     r_arrive_hour = returnArrival.split('T')[1]
+    r_arrive_date = returnArrival.split('T')[0]
     tripImageFile = request.files.get('tripImage')
     
     if tripImageFile:
@@ -205,47 +209,47 @@ def add():
     
     #checking the dates are correct
     
-    # try:
-    #     start_date_dt = datetime.fromisoformat(start_date)
-    #     end_date_dt = datetime.fromisoformat(end_date)
-    #     goingDeparture_dt = datetime.fromisoformat(goingDeparture)
-    #     goingArrival_dt = datetime.fromisoformat(goingArrival)
-    #     returnDeparture_dt = datetime.fromisoformat(returnDeparture)
-    #     returnArrival_dt = datetime.fromisoformat(returnArrival)
-    # except ValueError as e:
-    #     return Response(
-    #         json.dumps({"error": f"Invalid date format: {e}"}),
-    #         status=400,
-    #         headers={"Content-Type": "application/json"}
-    #     )
+    try:
+        start_date_dt = datetime.fromisoformat(start_date)
+        end_date_dt = datetime.fromisoformat(end_date)
+        goingDeparture_dt = datetime.fromisoformat(goingDeparture)
+        goingArrival_dt = datetime.fromisoformat(goingArrival)
+        returnDeparture_dt = datetime.fromisoformat(returnDeparture)
+        returnArrival_dt = datetime.fromisoformat(returnArrival)
+    except ValueError as e:
+        return Response(
+            json.dumps({"error": f"Invalid date format: {e}"}),
+            status=400,
+            headers={"Content-Type": "application/json"}
+        )
 
-    # errors = []
-
-
-    # if start_date_dt >= end_date_dt:
-    #     errors.append("Start date must be before end date.")
+    errors = []
 
 
-    # if goingDeparture_dt >= goingArrival_dt:
-    #     errors.append("Going departure must be before going arrival.")
+    if start_date_dt >= end_date_dt:
+        errors.append("Start date must be before end date.")
 
 
-    # if goingDeparture_dt >= returnDeparture_dt:
-    #     errors.append("Going departure must be before return departure.")
-    # if goingDeparture_dt >= returnArrival_dt:
-    #     errors.append("Going departure must be before return arrival.")
+    if goingDeparture_dt >= goingArrival_dt:
+        errors.append("Going departure must be before going arrival.")
 
 
-    # if returnDeparture_dt >= returnArrival_dt:
-    #     errors.append("Return departure must be before return arrival.")
+    if goingDeparture_dt >= returnDeparture_dt:
+        errors.append("Going departure must be before return departure.")
+    if goingDeparture_dt >= returnArrival_dt:
+        errors.append("Going departure must be before return arrival.")
 
 
-    # if errors:
-    #     return Response(
-    #         json.dumps({"errors": errors}),
-    #         status=400,
-    #         headers={"Content-Type": "application/json"}
-    #     )
+    if returnDeparture_dt >= returnArrival_dt:
+        errors.append("Return departure must be before return arrival.")
+
+
+    if errors:
+        return Response(
+            json.dumps({"errors": errors}),
+            status=400,
+            headers={"Content-Type": "application/json"}
+        )
         
     #enough checks
     
@@ -284,18 +288,18 @@ def add():
         
         
         cursor.execute(
-            "INSERT INTO going_fl (g_depart_city, g_depart_hour, g_arrive_city, g_arrive_hour, g_price, flight_options_id) VALUES (?, ?, ?, ?, ?, ?)",
+            "INSERT INTO going_fl (g_depart_city, g_depart_hour, g_depart_date, g_arrive_city, g_arrive_hour,g_arrive_date, g_price, flight_options_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
             (
-                g_depart_city, g_depart_hour, g_arrive_city, g_arrive_hour, g_price, flight_options_id,
+                g_depart_city, g_depart_hour, g_depart_date, g_arrive_city, g_arrive_hour,g_arrive_date, g_price, flight_options_id,
             )
         )
         
         connection.commit()
         
         cursor.execute(
-            "INSERT INTO return_fl (r_depart_city, r_depart_hour, r_arrive_city, r_arrive_hour, r_price, flight_options_id) VALUES (?, ?, ?, ?, ?,?)",
+            "INSERT INTO return_fl (r_depart_city, r_depart_hour, r_depart_date, r_arrive_city, r_arrive_hour,r_arrive_date, r_price, flight_options_id) VALUES (?, ?, ?, ?, ?,?,?,?)",
             (
-                r_depart_city, r_depart_hour, r_arrive_city, r_arrive_hour, r_price, flight_options_id,
+                r_depart_city, r_depart_hour,r_depart_date, r_arrive_city, r_arrive_hour,r_arrive_date, r_price, flight_options_id,
             )
         )
         
@@ -466,13 +470,17 @@ def getTripDetails(tripId):
                 trips.tripImage AS trip_image,
                 going_fl.g_depart_city,
                 going_fl.g_depart_hour,
+                going_fl.g_depart_date,
                 going_fl.g_arrive_city,
                 going_fl.g_arrive_hour,
+                going_fl.g_arrive_date,
                 going_fl.g_price,
                 return_fl.r_depart_city,
                 return_fl.r_depart_hour,
+                return_fl.r_depart_date,
                 return_fl.r_arrive_city,
                 return_fl.r_arrive_hour,
+                return_fl.r_arrive_date,
                 return_fl.r_price,
                 accomodation.a_place,
                 accomodation.a_price,
@@ -520,26 +528,30 @@ def getTripDetails(tripId):
                 "tripImage": trip_image_base64,
                 "goingFlight": {
                     "departCity": row[7],
-                    "departHour": row[8],
-                    "arriveCity": row[9],
-                    "arriveHour": row[10],
-                    "price": row[11],
+                    "departHour": row[8], #broi ot tuk
+                    "departDate": row[9],
+                    "arriveCity": row[10],
+                    "arriveHour": row[11],
+                    "arriveDate": row[12],
+                    "price": row[13],
                 },
                 "returnFlight": {
-                    "departCity": row[12],
-                    "departHour": row[13],
-                    "arriveCity": row[14],
-                    "arriveHour": row[15],
-                    "price": row[16],
+                    "departCity": row[14],
+                    "departHour": row[15],
+                    "departDate": row[16],
+                    "arriveCity": row[17],
+                    "arriveHour": row[18],
+                    "arriveDate": row[19],
+                    "price": row[20],
                 },
                 "accomodation": {
-                    "place": row[17],
-                    "price": row[18],
-                    "link": row[19],
+                    "place": row[21],
+                    "price": row[22],
+                    "link": row[23],
                 },
                 "extraTransportDetails": {
-                    "name": row[20],
-                    "price": row[21],
+                    "name": row[24],
+                    "price": row[25],
                 },
             }
 

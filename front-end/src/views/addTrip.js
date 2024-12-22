@@ -1,4 +1,5 @@
 import { html, render } from '../lib.js';
+import { page } from '../lib.js';
 
 const addTripTemplate = (submitTrip) => html`
     <section id="addTrip">
@@ -192,7 +193,7 @@ async function submitTrip(e) {
         const response = await fetch(url,options);       
 
         const result = await response.json();
-        page.redirect('/')
+        page.redirect('/');
 
         
     } catch (error) {

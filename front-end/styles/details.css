@@ -126,3 +126,45 @@
     background-color: #219EBC;
     color: white;
 }
+
+
+.fixed-copy-btn {
+    position: fixed;
+    top: 20%;
+    right: 30px;
+    width:max-content;
+    transform: translateY(-50%);
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.fixed-copy-btn:hover {
+    background-color: #45a049;
+}
+
+.copy-message {
+    position: fixed;
+    top: 27%;
+    right: 100px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #4CAF50;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 1000;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.copy-message.visible {
+    opacity: 1;
+}

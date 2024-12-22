@@ -102,8 +102,10 @@ query = """CREATE TABLE IF NOT EXISTS going_fl(
     goingId INTEGER constraint GOING_PK PRIMARY KEY AUTOINCREMENT,
     g_depart_city VARCHAR(40) ,
     g_depart_hour VARCHAR(5) ,
+    g_depart_date VARCHAR(10),
     g_arrive_city VARCHAR(40) ,
     g_arrive_hour VARCHAR(5) ,
+    g_arrive_date VARCHAR(10),
     g_price DECIMAL(5,2) ,
     flight_options_id INTEGER ,
     FOREIGN KEY (flight_options_id) REFERENCES flight_options(flight_options_id) ON DELETE CASCADE
@@ -125,8 +127,10 @@ query = """CREATE TABLE IF NOT EXISTS return_fl(
     returnId INTEGER PRIMARY KEY AUTOINCREMENT,
     r_depart_city VARCHAR(40) ,
     r_depart_hour VARCHAR(5) ,
+    r_depart_date VARCHAR(10),
     r_arrive_city VARCHAR(40) ,
     r_arrive_hour VARCHAR(5) ,
+    r_arrive_date VARCHAR(10),
     r_price DECIMAL(5,2) ,
     flight_options_id INTEGER ,
     FOREIGN KEY (flight_options_id) REFERENCES flight_options(flight_options_id) ON DELETE CASCADE
