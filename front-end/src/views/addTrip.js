@@ -78,15 +78,15 @@ const addTripTemplate = (submitTrip) => html`
     <!-- Accommodation Section -->
     <details>
         <summary>Accommodation</summary>
-        <form id="accommodationForm">
-            <label for="accommodationPlace">Place:</label>
-            <input type="text"  name="accommodationPlace" id="accommodationPlace" placeholder="Hotel name or location">
+        <form id="accomodationForm">
+            <label for="accomodationPlace">Place:</label>
+            <input type="text"  name="accomodationPlace" id="accomodationPlace" placeholder="Hotel name or location">
 
-            <label for="accommodationPrice">Price:</label>
-            <input type="number" name="accommodationPrice" id="accommodationPrice" placeholder="Cost per night" step="0.01">
+            <label for="accomodationPrice">Price:</label>
+            <input type="number" name="accomodationPrice" id="accomodationPrice" placeholder="Cost per night" step="0.01">
 
-            <label for="accommodationLink">Link:</label>
-            <input type="url" name="accommodationLink" id="accommodationLink" placeholder="Link to accommodation">
+            <label for="accomodationLink">Link:</label>
+            <input type="url" name="accomodationLink" id="accomodationLink" placeholder="Link to accomodation">
         </form>
     </details>
     <button @click=${submitTrip}>Save</button>
@@ -104,12 +104,12 @@ async function submitTrip(e) {
     const basicsForm = document.getElementById('basicsForm');
     const flightForm = document.getElementById('flightForm');
     const transportForm = document.getElementById('transportForm');
-    const accommodationForm = document.getElementById('accommodationForm');
+    const accomodationForm = document.getElementById('accomodationForm');
 
     const basicsInfo = new FormData(basicsForm);
     const flightInfo = new FormData(flightForm);
     const transportInfo = new FormData(transportForm);
-    const accomInfo = new FormData(accommodationForm);
+    const accomInfo = new FormData(accomodationForm);
 
 
 
@@ -132,9 +132,9 @@ async function submitTrip(e) {
     const transportName = transportInfo.get('transportName[]');
     const transportPrice = parseFloat(transportInfo.get('transportPrice[]'));
 
-    const accommodationPlace = accomInfo.get('accommodationPlace');
-    const accommodationPrice = parseFloat(accomInfo.get('accommodationPrice'));
-    const accommodationLink = accomInfo.get('accommodationLink');
+    const accomodationPlace = accomInfo.get('accomodationPlace');
+    const accomodationPrice = parseFloat(accomInfo.get('accomodationPrice'));
+    const accomodationLink = accomInfo.get('accomodationLink');
 
     const userId = JSON.parse(localStorage.getItem('user')).userId;
 
@@ -161,9 +161,9 @@ async function submitTrip(e) {
         returnPrice,
         transportName,
         transportPrice,
-        accommodationPlace,
-        accommodationPrice,
-        accommodationLink,
+        accomodationPlace,
+        accomodationPrice,
+        accomodationLink,
         userId
     };
 
@@ -192,6 +192,7 @@ async function submitTrip(e) {
         const response = await fetch(url,options);       
 
         const result = await response.json();
+        page.redirect('/')
 
         
     } catch (error) {

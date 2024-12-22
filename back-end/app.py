@@ -205,47 +205,47 @@ def add():
     
     #checking the dates are correct
     
-    try:
-        start_date_dt = datetime.fromisoformat(start_date)
-        end_date_dt = datetime.fromisoformat(end_date)
-        goingDeparture_dt = datetime.fromisoformat(goingDeparture)
-        goingArrival_dt = datetime.fromisoformat(goingArrival)
-        returnDeparture_dt = datetime.fromisoformat(returnDeparture)
-        returnArrival_dt = datetime.fromisoformat(returnArrival)
-    except ValueError as e:
-        return Response(
-            json.dumps({"error": f"Invalid date format: {e}"}),
-            status=400,
-            headers={"Content-Type": "application/json"}
-        )
+    # try:
+    #     start_date_dt = datetime.fromisoformat(start_date)
+    #     end_date_dt = datetime.fromisoformat(end_date)
+    #     goingDeparture_dt = datetime.fromisoformat(goingDeparture)
+    #     goingArrival_dt = datetime.fromisoformat(goingArrival)
+    #     returnDeparture_dt = datetime.fromisoformat(returnDeparture)
+    #     returnArrival_dt = datetime.fromisoformat(returnArrival)
+    # except ValueError as e:
+    #     return Response(
+    #         json.dumps({"error": f"Invalid date format: {e}"}),
+    #         status=400,
+    #         headers={"Content-Type": "application/json"}
+    #     )
 
-    errors = []
-
-
-    if start_date_dt >= end_date_dt:
-        errors.append("Start date must be before end date.")
+    # errors = []
 
 
-    if goingDeparture_dt >= goingArrival_dt:
-        errors.append("Going departure must be before going arrival.")
+    # if start_date_dt >= end_date_dt:
+    #     errors.append("Start date must be before end date.")
 
 
-    if goingDeparture_dt >= returnDeparture_dt:
-        errors.append("Going departure must be before return departure.")
-    if goingDeparture_dt >= returnArrival_dt:
-        errors.append("Going departure must be before return arrival.")
+    # if goingDeparture_dt >= goingArrival_dt:
+    #     errors.append("Going departure must be before going arrival.")
 
 
-    if returnDeparture_dt >= returnArrival_dt:
-        errors.append("Return departure must be before return arrival.")
+    # if goingDeparture_dt >= returnDeparture_dt:
+    #     errors.append("Going departure must be before return departure.")
+    # if goingDeparture_dt >= returnArrival_dt:
+    #     errors.append("Going departure must be before return arrival.")
 
 
-    if errors:
-        return Response(
-            json.dumps({"errors": errors}),
-            status=400,
-            headers={"Content-Type": "application/json"}
-        )
+    # if returnDeparture_dt >= returnArrival_dt:
+    #     errors.append("Return departure must be before return arrival.")
+
+
+    # if errors:
+    #     return Response(
+    #         json.dumps({"errors": errors}),
+    #         status=400,
+    #         headers={"Content-Type": "application/json"}
+    #     )
         
     #enough checks
     
@@ -302,12 +302,9 @@ def add():
         connection.commit()
         
         
-        
         cursor.execute(
             "INSERT INTO accomodation (a_place, a_price, a_link, tripId) VALUES (?, ?, ?, ?)",
-            (
-                a_place, a_price, a_link, tripId2
-            )
+            (a_place, a_price, a_link, tripId2)
         )
         
         connection.commit()
@@ -362,6 +359,58 @@ def getAllTrips():
                 FROM trips
                 LEFT JOIN users
                 ON trips.ownerId = users.userId;"""
+        )
+        
+        rows = cursor.fetchall()
+
+        trips_data = []
+        
+        
+        for row in rows:
+            imageBlob = row[5]
+            image_base64 = base64.b64encode(imageBlob).decode('utf-8')
+            
+            trips_data.append({
+                "tripId": row[0],
+                "destination": row[1], 
+                "startDate": row[2],
+                "endDate": row[3],
+                "ownerId": row[4],
+                "image": f"data:image/jpeg;base64,{image_base64}",
+                "firstName": row[6],
+                "lastName": row[7]
+                           
+            })
+            
+        return Response(
+                json.dumps({"data": trips_data}),
+                status=200,
+                headers={"Content-Type": "application/json"},
+            )
+    except Exception as e:
+        return Response(
+            json.dumps({"error": e}),
+            status=500,
+            headers={"Content-Type": "application/json"},
+        )
+    finally:
+        if connection:
+            connection.close()
+            
+@app.route("/myTrips/<int:userId>", methods=["GET"])
+def getMyTrips(userId):
+    
+    try:
+        connection = connect(database="C:\\Users\\NIYA\\Desktop\\You'll come tool\\back-end\\app.db")
+        cursor = connection.cursor()
+
+        cursor.execute(
+            """SELECT trips.*, users.first_name, users.last_name
+                FROM trips
+                LEFT JOIN users
+                ON trips.ownerId = users.userId
+                WHERE trips.ownerId = ?;""",(userId,)
+                
         )
         
         rows = cursor.fetchall()

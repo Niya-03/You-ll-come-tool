@@ -145,8 +145,8 @@ connection.close()
   
 query = """CREATE TABLE IF NOT EXISTS accomodation(
         accomodationId INTEGER PRIMARY KEY AUTOINCREMENT,
-        a_place VARCHAR(40) ,
-        a_price DECIMAL(5,2) ,
+        a_place VARCHAR(40),
+        a_price DECIMAL(5,2),
         a_link VARCHAR(2083),
         tripId INTEGER,
         FOREIGN KEY (tripId) REFERENCES trips(tripId) ON DELETE CASCADE

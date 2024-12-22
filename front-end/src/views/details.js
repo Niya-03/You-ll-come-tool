@@ -4,15 +4,15 @@ const detailsTemplate = (data) => html `
     <section id="details">
     <div class="container">
         <div class="detailBox">
-            <h2><i>${data.ownerFirstName}'s trip</i></h2>
+            <h2><i>${data.data.ownerFirstName}'s trip</i></h2>
         </div>
 
         <div class="detailBox">
-            <h2>Destination: ${data.destination}</h2>
+            <h2>Destination: ${data.data.destination}</h2>
         </div>
 
         <div class="detailBox">
-            <h2>Dates: ${data.startDate} - ${data.endDate}</h2>
+            <h2>Dates: ${data.data.startDate} to ${data.data.endDate}</h2>
         </div>
 
         <div class="flight-options">
@@ -22,16 +22,16 @@ const detailsTemplate = (data) => html `
                 <div class="box-title">Going</div>
                 <div class="details">
                     <p>Departs:</p>
-                    <p>City: ${data.goingFlight.departCity}</p>
-                    <p>Hour: ${data.goingFlight.departHour}</p>
+                    <p>City: ${data.data.goingFlight.departCity}</p>
+                    <p>Hour: ${data.data.goingFlight.departHour}</p>
                 </div>
                 <div class="details">
                     <p>Arrives:</p>
-                    <p>City: ${data.goingFlight.arriveCity}</p>
-                    <p>Hour: ${data.goingFlight.arriveHour}</p>
+                    <p>City: ${data.data.goingFlight.arriveCity}</p>
+                    <p>Hour: ${data.data.goingFlight.arriveHour}</p>
                 </div>
                 <div class="divider"></div>
-                <div class="price">Price: ${data.goingFlight.price}</div>
+                <div class="price">Price: ${data.data.goingFlight.price}</div>
             </div>
 
             <!-- Return Box -->
@@ -39,16 +39,16 @@ const detailsTemplate = (data) => html `
                 <div class="box-title">Return</div>
                 <div class="details">
                     <p>Departs:</p>
-                    <p>City: ${data.returnFlight.departCity}</p>
-                    <p>Hour: ${data.returnFlight.departHour}</p>
+                    <p>City: ${data.data.returnFlight.departCity}</p>
+                    <p>Hour: ${data.data.returnFlight.departHour}</p>
                 </div>
                 <div class="details">
                     <p>Arrives:</p>
-                    <p>City: ${data.returnFlight.arriveCity}</p>
-                    <p>Hour: ${data.returnFlight.arriveHour}</p>
+                    <p>City: ${data.data.returnFlight.arriveCity}</p>
+                    <p>Hour: ${data.data.returnFlight.arriveHour}</p>
                 </div>
                 <div class="divider"></div>
-                <div class="price">Price: ${data.returnFlight.price}</div>
+                <div class="price">Price: ${data.data.returnFlight.price}</div>
             </div>
         </div>
 
@@ -58,8 +58,8 @@ const detailsTemplate = (data) => html `
 
             <!-- Transport rows -->
             <div class="transport-row">
-                <p class="text-field">Type: ${data.extraTransportDetails.name}</p>
-                <span class="transport-price">Price: ${data.extraTransportDetails.price}</span>
+                <p class="text-field">Type: ${data.data.extraTransportDetails.name}</p>
+                <span class="transport-price">Price: ${data.data.extraTransportDetails.price}</span>
             </div>
             
         </div>
@@ -68,16 +68,16 @@ const detailsTemplate = (data) => html `
             <h3>Accommodation</h3>
             <!-- Row for place -->
             <div class="accommodation-row">
-                <p class="text-field">Place: ${data.accomodation.place}</p>
+                <p class="text-field">Place: ${data.data.accomodation.place}</p>
             </div>
             <!-- Row for price -->
             <div class="accommodation-row">
-                <p class="text-field">Price: ${data.accomodation.price} euro</p>
+                <p class="text-field">Price: ${data.data.accomodation.price} euro</p>
             </div>
             <!-- Row for link -->
             <div class="accommodation-row">
-                <p class="text-field">Link: <a href=${data.accomodation.link}
-                        target="_blank">${data.accomodation.link}</a></p>
+                <p class="text-field">Link: <a href=${data.data.accomodation.link}
+                        target="_blank">${data.data.accomodation.link}</a></p>
             </div>
         </div>
     </div>
@@ -91,7 +91,7 @@ export async function showDetailsView(ctx){
         const response = await fetch(url);
         const data = await response.json();
         console.log(data)
-
+        debugger;
         render(detailsTemplate(data));
     } catch (error) {
         return alert(error);
