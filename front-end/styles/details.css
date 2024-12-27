@@ -75,10 +75,9 @@
 .details p {
     margin: 2px 0;
     font-size: 20px;
-    /* Increased font size for details */
+    
 }
 
-/* Divider styling */
 .divider {
     border-top: 1px solid #ddd;
     margin: 8px 0;

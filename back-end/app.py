@@ -676,5 +676,66 @@ def edit_trip(tripId):
         if connection:
             connection.close()
 
+@app.route("/search/<string:query>", methods=["GET"])
+def searchTrip(query):
+    try:
+        connection = connect(database="C:\\Users\\NIYA\\Desktop\\You'll come tool\\back-end\\app.db")
+        cursor = connection.cursor()
+
+        query = f"%{query.upper()}%"
+    
+        cursor.execute(
+            """SELECT trips.*, users.first_name, users.last_name
+                FROM trips
+                LEFT JOIN users
+                ON trips.ownerId = users.userId
+                WHERE UPPER(trips.destination) LIKE ?;""",
+                (query,)
+                
+        )
+        
+        rows = cursor.fetchall()
+        
+        if rows.count == 0:
+            return Response(
+                json.dumps({"message": 'Nothing found'}),
+                status=200,
+                headers={"Content-Type": "application/json"},
+            )
+
+        trips_data = []
+        
+        
+        for row in rows:
+            imageBlob = row[5]
+            image_base64 = base64.b64encode(imageBlob).decode('utf-8')
+            
+            trips_data.append({
+                "tripId": row[0],
+                "destination": row[1], 
+                "startDate": row[2],
+                "endDate": row[3],
+                "ownerId": row[4],
+                "image": f"data:image/jpeg;base64,{image_base64}",
+                "firstName": row[6],
+                "lastName": row[7]
+                           
+            })
+            
+        return Response(
+                json.dumps({"data": trips_data}),
+                status=200,
+                headers={"Content-Type": "application/json"},
+            )
+    except Exception as e:
+        return Response(
+            json.dumps({"error": e}),
+            status=500,
+            headers={"Content-Type": "application/json"},
+        )
+    finally:
+        if connection:
+            connection.close()
+    
 if __name__ == "__main__":
     app.run(port=5001)

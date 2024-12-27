@@ -2,7 +2,7 @@ import {html, render} from '../lib.js';
 
 const dashboardTemplate = (data) => html `
     <section id="dashboard">
-    ${data.length ? data.map(x => cardTemp(x)) : html `<h2>No Trips yet.</h2>`}
+    ${data.length ? data.map(x => cardTemp(x)) : html `<h2>No Results Found.</h2>`}
 </section>
 `;
 
@@ -20,7 +20,9 @@ const cardTemp = (item) => html `
 
 export async function showSearchView(ctx){
     try{
-        const response = await fetch('http://127.0.0.1:5001/getAllTrips');
+        debugger;
+        let query = ctx.params.query;
+        const response = await fetch('http://127.0.0.1:5001/search/' + query);
         const data = await response.json();
  
         debugger;

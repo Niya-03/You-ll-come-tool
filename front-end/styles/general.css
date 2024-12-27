@@ -105,12 +105,27 @@ section {
 
 }
 
+#searchContainer{
+    margin-top: 230px;
+    position: absolute;
+    background-color: #FFFFFF;
+    display: none;
+    padding-right: 50px;
+    padding-left: 30px;
+    padding-bottom: 30px;
+    border-radius: 10px;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+}
+
 #logo-img {
     height: 80px;
     width: 90px;
 }
 
 #logo-text {
+    margin-left: 8%;
+    position: absolute;
     font-style: italic;
     font-size: 35px;
 }

@@ -57,7 +57,7 @@ const editTripTemplate = (data, submitTrip) => html`
             <input type="datetime-local" value=${data.data.returnFlight.arriveDate + 'T' + data.data.returnFlight.arriveHour} name="returnArrival" id="returnArrival">
 
             <label for="returnPrice">Price:</label>
-            <input type="number" ${data.data.returnFlight.price} name="returnPrice" id="returnPrice" placeholder="Ticket price" step="0.01">
+            <input type="number" value=${data.data.returnFlight.price} name="returnPrice" id="returnPrice" placeholder="Ticket price" step="0.01">
         </form>
     </details>
 

@@ -38,7 +38,7 @@ const detailsTemplate = (data, tripId, userId, fullPrice, calc) => html`
                     <p>Hour: ${data.data.goingFlight.arriveHour}</p>
                 </div>
                 <div class="divider"></div>
-                <div class="price">Price: ${data.data.goingFlight.price}</div>
+                <div class="price">Price: ${data.data.goingFlight.price}€</div>
             </div>
 
             <!-- Return Box -->
@@ -55,7 +55,7 @@ const detailsTemplate = (data, tripId, userId, fullPrice, calc) => html`
                     <p>Hour: ${data.data.returnFlight.arriveHour}</p>
                 </div>
                 <div class="divider"></div>
-                <div class="price">Price: ${data.data.returnFlight.price}</div>
+                <div class="price">Price: ${data.data.returnFlight.price}€</div>
             </div>
         </div>
 
@@ -66,7 +66,7 @@ const detailsTemplate = (data, tripId, userId, fullPrice, calc) => html`
             <!-- Transport rows -->
             <div class="transport-row">
                 <p class="text-field">Type: ${data.data.extraTransportDetails.name}</p>
-                <span class="transport-price">Price: ${data.data.extraTransportDetails.price}</span>
+                <span class="transport-price">Price: ${data.data.extraTransportDetails.price}€</span>
             </div>
             
         </div>
@@ -79,7 +79,7 @@ const detailsTemplate = (data, tripId, userId, fullPrice, calc) => html`
             </div>
             <!-- Row for price -->
             <div class="accommodation-row">
-                <p class="text-field">Price: ${data.data.accomodation.price} euro</p>
+                <p class="text-field">Price: ${data.data.accomodation.price}€</p>
             </div>
             <!-- Row for link -->
             <div class="accommodation-row">
@@ -89,7 +89,7 @@ const detailsTemplate = (data, tripId, userId, fullPrice, calc) => html`
         </div>
 
         <div class='calculator'>
-            <p class="text-field">Full price: ${fullPrice}<p>
+            <p class="text-field">Full price: ${fullPrice}€<p>
             <p class="text-field">How many people are coming?</p>
             <input id='pCount' @change=${calc} placeholder='Count of people'>
             <p id='pResult' class="text-field">Price per person: </p>
