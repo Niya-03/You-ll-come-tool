@@ -17,7 +17,8 @@ query = """CREATE TABLE IF NOT EXISTS users (
     password VARCHAR,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
-    is_active INTEGER
+    is_active INTEGER,
+    is_admin INTEGER DEFAULT 0
     );
 """
 # 2. add values to the query (depending on the situation)
@@ -36,6 +37,16 @@ connection.commit()
 cursor.close()
 
 # 6. close connection (optional)
+connection.close()
+
+#inserting admin
+query = """INSERT INTO users (first_name, last_name, email, password, is_admin) VALUES('admin', 'admin', 'admin@mail.com', '1234567890', 1);
+"""
+connection = connect()
+cursor = connection.cursor()
+cursor.execute(query)
+connection.commit()
+cursor.close()
 connection.close()
 
 

@@ -83,6 +83,13 @@ async function signin(e) {
         debugger;
         const result = await response.json();
 
+        if(result.data.isAdmin){
+            localStorage.setItem('user', JSON.stringify({'email':result.data.email ,'userId':result.data.userId, 'isAdmin': true}));
+            updateNav();
+            page.redirect('/admin');
+            return;
+        }
+
         localStorage.setItem('user', JSON.stringify({'email':result.data.email ,'userId':result.data.userId}));
         updateNav();
         page.redirect('/');

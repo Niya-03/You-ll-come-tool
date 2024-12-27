@@ -8,19 +8,7 @@ from flask_cors import CORS
 
 app = Flask("app")
 CORS(app)
-
-# TRIPS_DATA = [
-#     {"id": 1, "name": "Trip to Paris", "creator": "Alice", "destination": "Paris", "start_date": "2024-05-01", "end_date": "2024-05-07", "flights": [{"depart_city": "New York", "depart_time": "08:00", "arrive_city": "Paris", "arrive_time": "20:00", "price": "$500"}]},
-#     {"id": 2, "name": "Trip to Tokyo", "creator": "Bob", "destination": "Tokyo", "start_date": "2024-06-10", "end_date": "2024-06-20", "flights": [{"depart_city": "Los Angeles", "depart_time": "10:00", "arrive_city": "Tokyo", "arrive_time": "22:00", "price": "$800"}]},
-#     # More trips...
-# ]
-
-# @app.route('/')
-# def index():
-#     # Render the index with dashboard content
-#     return render_template('dashboard.html', trips=TRIPS_DATA)
     
-
 
 @app.route("/version", methods=["GET"])
 def version():
@@ -69,6 +57,7 @@ def signin():
         first_name = user[1]
         email_db = user[3]
         password_db = user[4]
+        is_admin = user[8]
 
         # 3.3 Check if the provided password matches
         if password != password_db:  # Add password hashing for security
@@ -78,9 +67,16 @@ def signin():
                 headers={"Content-Type": "application/json"},
             )
 
+        if is_admin == 1:
+            return Response(
+                json.dumps({"data": {"email": email_db, "userId": userId, "isAdmin": True}}),
+                status=200,
+                headers={"Content-Type": "application/json"},
+            )
+
         # 4. Return a response with user details
         return Response(
-            json.dumps({"data": {"email": email_db, "userId": userId}}),
+            json.dumps({"data": {"email": email_db, "userId": userId, "isAdmin": False}}),
             status=200,
             headers={"Content-Type": "application/json"},
         )

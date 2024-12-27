@@ -9,6 +9,7 @@ import { clearUserData, updateNav } from './util.js';
 import { showMyDashboardView } from './views/myTrips.js';
 import { showEditTripView } from './views/edit.js';
 import { showSearchView } from './views/search.js';
+import { showAdminView } from './views/admin.js';
 
 updateNav();
 
@@ -21,6 +22,7 @@ page('/add', showaddTripView);
 page('/mytrips', showMyDashboardView);
 page('/edit/:tripId', showEditTripView);
 page('/search/:query', showSearchView);
+page('/admin', showAdminView);
 
 
 
