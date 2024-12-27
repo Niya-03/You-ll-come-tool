@@ -167,7 +167,6 @@ def signup():
     
 @app.route("/add", methods=["POST"])
 def add():
-    print(request.form)
     destination = request.form.get('destination')
     start_date = request.form.get('beginDate')
     end_date = request.form.get('endDate')
@@ -462,6 +461,7 @@ def getTripDetails(tripId):
         query = """
             SELECT 
                 trips.tripId,
+                trips.ownerId,
                 trips.destination,
                 trips.start_date,
                 trips.end_date,
@@ -514,44 +514,45 @@ def getTripDetails(tripId):
         if row:
             
             trip_image_base64 = None
-            if row[6]:
+            if row[7]:
                 import base64
-                trip_image_base64 = base64.b64encode(row[6]).decode("utf-8")
+                trip_image_base64 = base64.b64encode(row[7]).decode("utf-8")
 
             trip_details = {
                 "tripId": row[0],
-                "destination": row[1],
-                "startDate": row[2],
-                "endDate": row[3],
-                "ownerFirstName": row[4],
-                "ownerLastName": row[5],
+                "ownerId": row[1],
+                "destination": row[2],
+                "startDate": row[3],
+                "endDate": row[4],
+                "ownerFirstName": row[5],
+                "ownerLastName": row[6],
                 "tripImage": trip_image_base64,
                 "goingFlight": {
-                    "departCity": row[7],
-                    "departHour": row[8], #broi ot tuk
-                    "departDate": row[9],
-                    "arriveCity": row[10],
-                    "arriveHour": row[11],
-                    "arriveDate": row[12],
-                    "price": row[13],
+                    "departCity": row[8],
+                    "departHour": row[9], #broi ot tuk
+                    "departDate": row[10],
+                    "arriveCity": row[11],
+                    "arriveHour": row[12],
+                    "arriveDate": row[13],
+                    "price": row[14],
                 },
                 "returnFlight": {
-                    "departCity": row[14],
-                    "departHour": row[15],
-                    "departDate": row[16],
-                    "arriveCity": row[17],
-                    "arriveHour": row[18],
-                    "arriveDate": row[19],
-                    "price": row[20],
+                    "departCity": row[15],
+                    "departHour": row[16],
+                    "departDate": row[17],
+                    "arriveCity": row[18],
+                    "arriveHour": row[19],
+                    "arriveDate": row[20],
+                    "price": row[21],
                 },
                 "accomodation": {
-                    "place": row[21],
-                    "price": row[22],
-                    "link": row[23],
+                    "place": row[22],
+                    "price": row[23],
+                    "link": row[24],
                 },
                 "extraTransportDetails": {
-                    "name": row[24],
-                    "price": row[25],
+                    "name": row[25],
+                    "price": row[26],
                 },
             }
 
@@ -574,6 +575,103 @@ def getTripDetails(tripId):
             status=500,
             headers={"Content-Type": "application/json"},
         )
+    finally:
+        if connection:
+            connection.close()
+            
+@app.route("/edit/<int:tripId>", methods=["PUT"])
+def edit_trip(tripId):
+    destination = request.form.get('destination')
+    start_date = request.form.get('beginDate')
+    end_date = request.form.get('endDate')
+    g_depart_city = request.form.get('goingCity')
+    goingDeparture = request.form.get('goingDeparture')
+    g_arrive_city = request.form.get('goingArriveCity')
+    goingArrival = request.form.get('goingArrival')
+    g_price = request.form.get('goingPrice')
+    r_depart_city = request.form.get('returnCity')
+    returnDeparture = request.form.get('returnDeparture')
+    r_arrive_city = request.form.get('returnArrivalCity')
+    returnArrival = request.form.get('returnArrival')
+    r_price = request.form.get('returnPrice')
+    e_trans_name = request.form.get('transportName')
+    e_trans_price = request.form.get('transportPrice')
+    a_place = request.form.get('accomodationPlace')
+    a_price = request.form.get('accomodationPrice')
+    a_link = request.form.get('accomodationLink')
+
+
+    g_depart_hour = goingDeparture.split('T')[1]
+    g_depart_date = goingDeparture.split('T')[0]
+    g_arrive_hour = goingArrival.split('T')[1]
+    g_arrive_date = goingArrival.split('T')[0]
+    r_depart_hour = returnDeparture.split('T')[1]
+    r_depart_date = returnDeparture.split('T')[0]
+    r_arrive_hour = returnArrival.split('T')[1]
+    r_arrive_date = returnArrival.split('T')[0]
+    tripImageFile = request.files.get('tripImage')
+
+    try:
+        connection = connect(database="C:\\Users\\NIYA\\Desktop\\You'll come tool\\back-end\\app.db")
+        cursor = connection.cursor()
+
+
+        if tripImageFile:
+            cursor.execute("""
+                UPDATE trips
+                SET destination = ?, start_date = ?, end_date = ?, tripImage = ?
+                WHERE tripId = ?;
+            """, (destination, start_date, end_date, tripImageFile.read() if tripImageFile else None, tripId))
+        else:
+            cursor.execute("""
+                UPDATE trips
+                SET destination = ?, start_date = ?, end_date = ? 
+                WHERE tripId = ?;
+            """, (destination, start_date, end_date, tripId))
+
+        cursor.execute("""
+            UPDATE going_fl
+            SET g_depart_city = ?, g_depart_hour = ?, g_depart_date = ?, g_arrive_city = ?, 
+                g_arrive_hour = ?, g_arrive_date = ?, g_price = ?
+            WHERE flight_options_id = (SELECT flight_options_id FROM flight_options WHERE tripId = ?);
+        """, (g_depart_city, g_depart_hour, g_depart_date, g_arrive_city, g_arrive_hour, g_arrive_date, g_price, tripId))
+
+        cursor.execute("""
+            UPDATE return_fl
+            SET r_depart_city = ?, r_depart_hour = ?, r_depart_date = ?, r_arrive_city = ?, 
+                r_arrive_hour = ?, r_arrive_date = ?, r_price = ?
+            WHERE flight_options_id = (SELECT flight_options_id FROM flight_options WHERE tripId = ?);
+        """, (r_depart_city, r_depart_hour, r_depart_date, r_arrive_city, r_arrive_hour, r_arrive_date, r_price, tripId))
+
+        cursor.execute("""
+            UPDATE accomodation
+            SET a_place = ?, a_price = ?, a_link = ?
+            WHERE tripId = ?;
+        """, (a_place, a_price, a_link, tripId))
+
+
+        cursor.execute("""
+            UPDATE extra_transport_details
+            SET e_trans_name = ?, e_trans_price = ?
+            WHERE extra_transport_id = (SELECT extra_transport_id FROM extra_transport WHERE tripId = ?);
+        """, (e_trans_name, e_trans_price, tripId))
+
+
+        connection.commit()
+
+        return Response(
+            json.dumps({"message": 'lesgo'}),
+            status=200,
+            headers={"Content-Type": "application/json"},
+        )
+
+    except Exception as e:
+        return Response(
+            json.dumps({"error": e}),
+            status=500,
+            headers={"Content-Type": "application/json"},
+        )
+
     finally:
         if connection:
             connection.close()

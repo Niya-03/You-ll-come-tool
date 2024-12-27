@@ -1,6 +1,6 @@
 import { html, render } from '../lib.js';
 
-const detailsTemplate = (data) => html`
+const detailsTemplate = (data, tripId, userId) => html`
     <section id="details">
     
     <div class="container">
@@ -17,6 +17,10 @@ const detailsTemplate = (data) => html`
         <div class="detailBox">
             <h2>Dates: ${data.data.startDate} to ${data.data.endDate}</h2>
         </div>
+
+        
+        ${userId == data.data.ownerId ? html `<a id='editBtn' href="/edit/${tripId}" class="details-button">Edit</a>` : ''}
+        
 
         <div class="flight-options">
             <h3>Flight Options</h3>
@@ -97,8 +101,18 @@ export async function showDetailsView(ctx) {
         const response = await fetch(url);
         const data = await response.json();
         console.log(data)
-        debugger;
-        render(detailsTemplate(data));
+        let userId = 0;
+
+        if(localStorage.getItem('user')){
+            const user = JSON.parse(localStorage.getItem('user'));
+            userId = user.userId;
+        }else{
+            userId = null;
+        }
+        
+        
+
+        render(detailsTemplate(data, tripId, userId));
     } catch (error) {
         return alert(error);
     }
