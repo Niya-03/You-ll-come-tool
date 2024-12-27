@@ -2,7 +2,8 @@
 .flight-options,
 .extra-transport,
 .accommodation,
-.other-expenses {
+.other-expenses,
+.calculator {
     background-color: #FFFFFF;
     border: 2px solid #FFB703;
     /* Set all elements' borders to #FFB703 */
@@ -10,6 +11,17 @@
     padding: 20px;
     margin: 15px 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.calculator input{
+    padding: 10px;
+    border: 2px solid #FFB703;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #023047;
+    font-family: 'Teko', sans-serif;
+    background-color: #ffffff;
+    transition: border-color 0.3s ease;
 }
 
 .detailBox {

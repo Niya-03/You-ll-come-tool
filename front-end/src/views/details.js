@@ -1,6 +1,6 @@
 import { html, render } from '../lib.js';
 
-const detailsTemplate = (data, tripId, userId) => html`
+const detailsTemplate = (data, tripId, userId, fullPrice, calc) => html`
     <section id="details">
     
     <div class="container">
@@ -19,7 +19,7 @@ const detailsTemplate = (data, tripId, userId) => html`
         </div>
 
         
-        ${userId == data.data.ownerId ? html `<a id='editBtn' href="/edit/${tripId}" class="details-button">Edit</a>` : ''}
+        ${userId == data.data.ownerId ? html`<a id='editBtn' href="/edit/${tripId}" class="details-button">Edit</a>` : ''}
         
 
         <div class="flight-options">
@@ -84,8 +84,15 @@ const detailsTemplate = (data, tripId, userId) => html`
             <!-- Row for link -->
             <div class="accommodation-row">
                 <p class="text-field">Link: <a href=${data.data.accomodation.link}
-                        target="_blank">${data.data.accomodation.link}</a></p>
+                target="_blank">${data.data.accomodation.link}</a></p>
             </div>
+        </div>
+
+        <div class='calculator'>
+            <p class="text-field">Full price: ${fullPrice}<p>
+            <p class="text-field">How many people are coming?</p>
+            <input id='pCount' @change=${calc} placeholder='Count of people'>
+            <p id='pResult' class="text-field">Price per person: </p>
         </div>
     </div>
 
@@ -93,6 +100,15 @@ const detailsTemplate = (data, tripId, userId) => html`
     <span id="copyMessage" class="copy-message">Link copied!</span>
 </section>
 `;
+
+let fPrice;
+
+function calc(){
+    debugger;
+    let count = Number(document.getElementById('pCount').value).toFixed(0);
+    document.getElementById('pResult').textContent = `Price per person: ${(fPrice/count).toFixed(2)}€`;
+
+}
 
 export async function showDetailsView(ctx) {
     const tripId = ctx.params.tripId;
@@ -103,16 +119,21 @@ export async function showDetailsView(ctx) {
         console.log(data)
         let userId = 0;
 
-        if(localStorage.getItem('user')){
+        if (localStorage.getItem('user')) {
             const user = JSON.parse(localStorage.getItem('user'));
             userId = user.userId;
-        }else{
+        } else {
             userId = null;
         }
-        
-        
+        debugger;
+        let fullPrice =
+            (parseFloat(String(data.data.goingFlight.price)) || 0) +
+            (parseFloat(String(data.data.returnFlight.price)) || 0) +
+            (parseFloat(String(data.data.extraTransportDetails.price)) || 0) +
+            (parseFloat(String(data.data.accomodation.price)) || 0);
 
-        render(detailsTemplate(data, tripId, userId));
+        fPrice = fullPrice;
+        render(detailsTemplate(data, tripId, userId, fullPrice, calc));
     } catch (error) {
         return alert(error);
     }
@@ -120,7 +141,7 @@ export async function showDetailsView(ctx) {
 
     document.getElementById("copyButton").addEventListener("click", () => {
         const pageLink = window.location.href;
-    
+
         navigator.clipboard.writeText(pageLink)
             .then(() => {
                 const copyMessage = document.getElementById("copyMessage");

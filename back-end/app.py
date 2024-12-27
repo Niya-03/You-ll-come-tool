@@ -529,7 +529,7 @@ def getTripDetails(tripId):
                 "tripImage": trip_image_base64,
                 "goingFlight": {
                     "departCity": row[8],
-                    "departHour": row[9], #broi ot tuk
+                    "departHour": row[9], 
                     "departDate": row[10],
                     "arriveCity": row[11],
                     "arriveHour": row[12],
