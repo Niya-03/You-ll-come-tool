@@ -180,3 +180,17 @@
 .copy-message.visible {
     opacity: 1;
 }
+
+#deleteBtn{
+    display: inline;
+    text-align: center;
+    font-family: 'Teko', sans-serif;
+    font-size: 30px;
+    padding-left: 25px;
+    padding-right: 25px;
+    margin-left: 5px;
+}
+
+.detailButtons{
+    display: inline-flex;
+}

@@ -802,6 +802,33 @@ def deleteUser(userId):
         if connection:
             connection.close()
     
+@app.route("/deleteTrip/<int:tripId>", methods=["DELETE"])
+def deleteTrip(tripId):
+    try:
+        connection = connect(database="C:\\Users\\NIYA\\Desktop\\You'll come tool\\back-end\\app.db")
+        cursor = connection.cursor()
+
+        cursor.execute(
+            "DELETE FROM trips WHERE tripId = ?;",
+            (tripId,)
+        )
+        
+        connection.commit()
+        
+        return Response(
+                json.dumps({"message": 'Trip deleted'}),
+                status=200,
+                headers={"Content-Type": "application/json"},
+            )
+    except Exception as e:
+        return Response(
+            json.dumps({"error": e}),
+            status=500,
+            headers={"Content-Type": "application/json"},
+        )
+    finally:
+        if connection:
+            connection.close()
 
 if __name__ == "__main__":
     app.run(port=5001)

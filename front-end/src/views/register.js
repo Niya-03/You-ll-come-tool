@@ -47,21 +47,8 @@ export function showRegisterView(ctx) {
 }
 
 
-
-// const registerBtn = document.getElementById('next-btn');
-// registerBtn.addEventListener('click', signup)
-
-
-// const form = document.getElementById('signup-form');
-// if (form) {
-//     form.addEventListener('submit', signup);
-// }
-
-
-
 function stopFormDefault(event) {
     event.preventDefault();
-    // actual logic, e.g. validate the form
     console.log('Form submission cancelled.');
 }
 
@@ -86,21 +73,18 @@ async function signup(e) {
     const confirmPassword = document.getElementById('confirm-password');
 
     if (password.value == "" || password.value != confirmPassword.value) {
-        console.log("passwords are different");
-        return;
+        return alert("passwords are different");
     }
 
     const terms = document.getElementById('terms');
     const privacy = document.getElementById('privacy');
 
     if (!terms.checked) {
-        console.log('Terms not checked');
-        return;
+        return alert('Terms not checked');
     }
 
     if (!privacy.checked) {
-        console.log('privacy not checked!');
-        return;
+        return alert('privacy not checked!');
     }
 
     user.firstName = document.getElementById('firstname').value;

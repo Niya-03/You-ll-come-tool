@@ -1,10 +1,10 @@
 import { html, render } from '../lib.js';
+import { page } from '../lib.js';   
 
-const detailsTemplate = (data, tripId, userId, fullPrice, calc) => html`
+const detailsTemplate = (data, tripId, userId, fullPrice, calc, isAdmin) => html`
     <section id="details">
     
     <div class="container">
-
 
         <div class="detailBox">
             <h2><i>${data.data.ownerFirstName}'s trip</i></h2>
@@ -18,9 +18,11 @@ const detailsTemplate = (data, tripId, userId, fullPrice, calc) => html`
             <h2>Dates: ${data.data.startDate} to ${data.data.endDate}</h2>
         </div>
 
-        
-        ${userId == data.data.ownerId ? html`<a id='editBtn' href="/edit/${tripId}" class="details-button">Edit</a>` : ''}
-        
+        <div class="detailButtons">
+            ${userId == data.data.ownerId || isAdmin ? html`<a id='editBtn' href="/edit/${tripId}" class="details-button">Edit</a>` : ''}
+            ${userId == data.data.ownerId || isAdmin ? html`<a id='deleteBtn' href="/delete/${tripId}" class="details-button">Delete</a>` : ''}
+        </div>
+    
 
         <div class="flight-options">
             <h3>Flight Options</h3>
@@ -104,24 +106,28 @@ const detailsTemplate = (data, tripId, userId, fullPrice, calc) => html`
 let fPrice;
 
 function calc(){
-    debugger;
     let count = Number(document.getElementById('pCount').value).toFixed(0);
     document.getElementById('pResult').textContent = `Price per person: ${(fPrice/count).toFixed(2)}€`;
 
 }
 
+let tripIdg;
+
 export async function showDetailsView(ctx) {
     const tripId = ctx.params.tripId;
+    tripIdg = tripId;
     const url = 'http://127.0.0.1:5001/details/' + tripId;
     try {
         const response = await fetch(url);
         const data = await response.json();
         console.log(data)
         let userId = 0;
+        let isAdmin;
 
         if (localStorage.getItem('user')) {
             const user = JSON.parse(localStorage.getItem('user'));
             userId = user.userId;
+            isAdmin = user.isAdmin;
         } else {
             userId = null;
         }
@@ -133,11 +139,33 @@ export async function showDetailsView(ctx) {
             (parseFloat(String(data.data.accomodation.price)) || 0);
 
         fPrice = fullPrice;
-        render(detailsTemplate(data, tripId, userId, fullPrice, calc));
+        render(detailsTemplate(data, tripId, userId, fullPrice, calc, isAdmin));
+
+        document.getElementById('deleteBtn').addEventListener('click', deleteTrip);
+
+
     } catch (error) {
         return alert(error);
     }
 
+    async function deleteTrip(e) {
+        e.preventDefault();
+            debugger;
+        
+            try{
+                const response = await fetch(`http://127.0.0.1:5001/deleteTrip/${tripIdg}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+        
+                if(response.ok){
+                    page.redirect('/alltrips');
+                }
+            }catch(e){
+                return alert(e)
+            }
+    
+    }
 
     document.getElementById("copyButton").addEventListener("click", () => {
         const pageLink = window.location.href;
