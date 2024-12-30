@@ -29,9 +29,8 @@ page('/admin', showAdminView);
 page.start();
 
 document.getElementById('logoutBtn').addEventListener('click', async () => {
-    // await userApi.logout(); 
     clearUserData();
-    page.redirect('/');
+    page.redirect('/alltrips');
     updateNav();
 });
 

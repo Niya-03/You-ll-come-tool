@@ -733,5 +733,75 @@ def searchTrip(query):
         if connection:
             connection.close()
     
+@app.route("/allUsers", methods=["GET"])
+def getUsers():
+    try:
+        connection = connect(database="C:\\Users\\NIYA\\Desktop\\You'll come tool\\back-end\\app.db")
+        cursor = connection.cursor()
+
+        cursor.execute(
+            "SELECT * FROM users;"
+        )
+        
+        rows = cursor.fetchall()
+
+        users_data = []
+        
+        for row in rows:
+            users_data.append({
+                "userId": row[0],
+                "firstName": row[1], 
+                "lastName": row[2],
+                "email": row[3],
+                "password": row[4],
+                "created_at": row[5],
+                "updated_at": row[6],
+                "is_admin": row[8]
+            })
+            
+        return Response(
+                json.dumps({"data": users_data}),
+                status=200,
+                headers={"Content-Type": "application/json"},
+            )
+    except Exception as e:
+        return Response(
+            json.dumps({"error": e}),
+            status=500,
+            headers={"Content-Type": "application/json"},
+        )
+    finally:
+        if connection:
+            connection.close()
+
+@app.route("/deleteUser/<int:userId>", methods=["DELETE"])
+def deleteUser(userId):
+    try:
+        connection = connect(database="C:\\Users\\NIYA\\Desktop\\You'll come tool\\back-end\\app.db")
+        cursor = connection.cursor()
+
+        cursor.execute(
+            "DELETE FROM users WHERE userId = ?;",
+            (userId,)
+        )
+        
+        connection.commit()
+        
+        return Response(
+                json.dumps({"message": 'User deleted'}),
+                status=200,
+                headers={"Content-Type": "application/json"},
+            )
+    except Exception as e:
+        return Response(
+            json.dumps({"error": e}),
+            status=500,
+            headers={"Content-Type": "application/json"},
+        )
+    finally:
+        if connection:
+            connection.close()
+    
+
 if __name__ == "__main__":
     app.run(port=5001)

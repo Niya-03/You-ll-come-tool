@@ -21,9 +21,16 @@ function updateNav(){
     if(userData){
         document.querySelector('nav .guest').style.display = 'none';
         document.querySelector('nav .user').style.display = 'block';
-    }else{
+        document.querySelector('nav .admin').style.display = 'none';
+
+        if(userData.isAdmin){
+            document.querySelector('nav .admin').style.display = 'block';
+        }
+
+    }else {
         document.querySelector('nav .guest').style.display = 'block';
         document.querySelector('nav .user').style.display = 'none';
+        document.querySelector('nav .admin').style.display = 'none';
     }
 }
 
