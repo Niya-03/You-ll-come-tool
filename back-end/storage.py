@@ -213,3 +213,22 @@ cursor.execute(query)
 connection.commit()
 cursor.close()
 connection.close()
+
+query = """CREATE TABLE IF NOT EXISTS goingList(
+    tripId INTEGER ,
+    userId INTEGER ,
+    FOREIGN KEY (tripId) REFERENCES trips(tripId) ON DELETE CASCADE,
+    FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE,
+    PRIMARY KEY(tripId, userId)
+    );
+"""
+
+connection = connect()
+
+connection.execute("PRAGMA foreign_keys = ON;")
+
+cursor = connection.cursor()
+cursor.execute(query)
+connection.commit()
+cursor.close()
+connection.close()

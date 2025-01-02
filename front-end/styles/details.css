@@ -6,14 +6,13 @@
 .calculator {
     background-color: #FFFFFF;
     border: 2px solid #FFB703;
-    /* Set all elements' borders to #FFB703 */
     border-radius: 8px;
     padding: 20px;
     margin: 15px 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.calculator input{
+.calculator input {
     padding: 10px;
     border: 2px solid #FFB703;
     border-radius: 5px;
@@ -34,25 +33,23 @@
     font-style: italic;
 }
 
-/* Flight options styling */
+
 .flight-options {
     border: 2px solid #FFB703;
-    /* Use #FFB703 for flight options border */
+
 }
 
-/* Flight box styling */
+
 .flight-box {
     position: relative;
     padding: 10px 10px 10px 80px;
-    /* Space for the box title on the left */
     border: 1px solid #FFB703;
-    /* Lighter yellow for flight boxes */
     margin-bottom: 10px;
     background-color: #f9f9f9;
-    /* Light background for the boxes */
+
 }
 
-/* Title styling */
+
 .box-title {
     transform: rotate(-90deg);
     position: absolute;
@@ -62,10 +59,9 @@
     width: 60px;
     text-align: left;
     font-size: 24px;
-    /* Increased font size for box title */
 }
 
-/* Details styling */
+
 .details {
     display: inline-block;
     flex-direction: column;
@@ -75,7 +71,7 @@
 .details p {
     margin: 2px 0;
     font-size: 20px;
-    
+
 }
 
 .divider {
@@ -83,15 +79,14 @@
     margin: 8px 0;
 }
 
-/* Price styling */
+
 .price {
     font-weight: bold;
     font-size: 20px;
-    /* Increased font size for price */
     text-align: left;
 }
 
-/* Extra transport and accommodation styling */
+
 .extra-transport,
 .accommodation,
 .other-expenses {
@@ -100,7 +95,7 @@
     max-width: 400px;
 }
 
-/* Row styling */
+
 .transport-row,
 .accommodation-row,
 .expenses-row {
@@ -116,13 +111,11 @@
     border-bottom: none;
 }
 
-/* Plus button styling */
 .add-row-button {
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 28px;
-    /* Increased font size for plus button */
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -144,7 +137,7 @@
     position: fixed;
     top: 20%;
     right: 30px;
-    width:max-content;
+    width: max-content;
     transform: translateY(-50%);
     background-color: #4CAF50;
     color: white;
@@ -160,6 +153,28 @@
 .fixed-copy-btn:hover {
     background-color: #45a049;
 }
+
+#addGoingBtn {
+    position: fixed;
+    top: 35%;
+    right: 30px;
+    width: max-content;
+    transform: translateY(-50%);
+    background-color: #FFB703;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#addGoingBtn:hover {
+    background-color: #FB8500;
+}
+
 
 .copy-message {
     position: fixed;
@@ -181,7 +196,7 @@
     opacity: 1;
 }
 
-#deleteBtn{
+#deleteBtn {
     display: inline;
     text-align: center;
     font-family: 'Teko', sans-serif;
@@ -191,6 +206,63 @@
     margin-left: 5px;
 }
 
-.detailButtons{
+.detailButtons {
     display: inline-flex;
+}
+
+.goingList {
+    position: fixed;
+    /* Fix it relative to the viewport */
+    top: 39%;
+    /* Position it 37% from the top */
+    right: 30px;
+    /* Position it 30px from the right */
+    display: flex;
+    flex-direction: column;
+    /* Arrange items vertically */
+    gap: 0;
+    /* No gaps between items */
+    padding: 15px;
+    max-width: 300px;
+    /* Limit the width */
+    background-color: #f9f9f9;
+    /* Light background */
+    border: 1px solid #ddd;
+    /* Subtle border */
+    border-radius: 10px;
+    /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Soft shadow for depth */
+    z-index: 1000;
+    /* Ensure it's on top of other elements */
+    overflow-y: auto;
+    /* Add scrolling for longer lists */
+    max-height: 50vh;
+    /* Limit height for long lists */
+}
+
+
+.goingList-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    font-size: 9;
+    color: #333;
+    height: 10px;
+    border-bottom: 1px solid black;
+    padding: 8px;
+}
+
+.goingList-item:last-child {
+    border-bottom: none;
+}
+
+.goingList-item span {
+    flex: 1;
+    /* Allow columns to adjust evenly */
+    text-align: left;
+    /* Align text to the left */
+    padding: 0 5px;
+    /* Add some padding for spacing */
 }

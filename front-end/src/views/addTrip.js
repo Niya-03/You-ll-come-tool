@@ -72,7 +72,7 @@ const addTripTemplate = (submitTrip) => html`
                 <label for="transportPrice">Price:</label>
                 <input type="number" name="transportPrice[]" placeholder="Price" step="0.01">
             </div>
-            <button type="button" onclick="addTransportRow()">Add Another Transport</button>
+            <!-- <button type="button" onclick="addTransportRow()">Add Another Transport</button> -->
         </form>
     </details>
 

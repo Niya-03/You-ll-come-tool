@@ -1,5 +1,5 @@
 import base64
-from sqlite3 import connect
+from sqlite3 import IntegrityError, connect
 import sqlite3
 from flask import Flask, json, render_template, request, Response
 from datetime import datetime
@@ -829,6 +829,110 @@ def deleteTrip(tripId):
     finally:
         if connection:
             connection.close()
+
+@app.route("/addGoingTrip/<int:tripId>/<int:userId>", methods=["POST"])
+def addGoingTrip(tripId, userId):
+    try:
+        connection = connect(database="C:\\Users\\NIYA\\Desktop\\You'll come tool\\back-end\\app.db")
+        cursor = connection.cursor()
+
+        cursor.execute(
+            "INSERT INTO goingList (tripId, userId) VALUES (?, ?)",
+            (tripId, userId)
+        )
+        
+        connection.commit()
+        
+        return Response(
+                json.dumps({"message": 'Used added to going list'}),
+                status=200,
+                headers={"Content-Type": "application/json"},
+            )
+
+    except IntegrityError:
+        return Response(
+            json.dumps({"error": "User is already in the going list for this trip"}),
+            status=400,
+            headers={"Content-Type": "application/json"},
+        )
+
+    except Exception as e:
+        return Response(
+            json.dumps({"error": e}),
+            status=500,
+            headers={"Content-Type": "application/json"},
+        )
+    finally:
+        if connection:
+            connection.close()
+            
+@app.route("/getGoingTrip/<int:tripId>", methods=["GET"])
+def goingTrip(tripId):
+    try:
+        connection = connect(database="C:\\Users\\NIYA\\Desktop\\You'll come tool\\back-end\\app.db")
+        cursor = connection.cursor()
+
+        cursor.execute(
+            "SELECT users.first_name, users.last_name, users.userId FROM goingList LEFT JOIN users ON goingList.userId = users.userId WHERE tripId = ?",
+            (tripId,)
+        )
+        
+        rows = cursor.fetchall()
+
+        goingList_data = []
+        
+        for row in rows:
+            goingList_data.append({
+                "firstName": row[0],
+                "lastName": row[1], 
+                "userId" : row[2]
+            })
+        
+        
+        
+        return Response(
+                json.dumps({"data": goingList_data}),
+                status=200,
+                headers={"Content-Type": "application/json"},
+            )
+
+    except Exception as e:
+        return Response(
+            json.dumps({"error": e}),
+            status=500,
+            headers={"Content-Type": "application/json"},
+        )
+    finally:
+        if connection:
+            connection.close()
+
+@app.route("/removeGoingTrip/<int:tripId>/<int:userId>", methods=["DELETE"])
+def removeGoingTrip(tripId, userId):
+    try:
+        connection = connect(database="C:\\Users\\NIYA\\Desktop\\You'll come tool\\back-end\\app.db")
+        cursor = connection.cursor()
+
+        cursor.execute(
+            "DELETE FROM goingList WHERE tripId = ? AND userId = ?",
+            (tripId, userId)
+        )
+        connection.commit()
+
+        return Response(
+            json.dumps({"message": "User removed from going list"}),
+            status=200,
+            headers={"Content-Type": "application/json"},
+        )
+    except Exception as e:
+        return Response(
+            json.dumps({"error": str(e)}),
+            status=500,
+            headers={"Content-Type": "application/json"},
+        )
+    finally:
+        if connection:
+            connection.close()
+
 
 if __name__ == "__main__":
     app.run(port=5001)
