@@ -30,7 +30,7 @@ export function showCongratsView() {
 
     document.getElementById('detailsButton')
     .addEventListener('click', () => {bg.style.backgroundColor = '#9adae5a5'
-    body.style.overflow = 'scroll';}
+    body.style.overflow = 'visible';}
 )
 
 
