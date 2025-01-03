@@ -21,11 +21,18 @@ export function showCongratsView() {
     let tripId = sessionStorage.cTripId;
     let bg = document.getElementById('mainElement')
     bg.style.backgroundColor = '#052242'
+
+    let body = document.querySelector('body');
+    body.style.overflow = 'hidden';
+
     render(congratsTemplate(tripId))
     //sessionStorage.clear();
 
     document.getElementById('detailsButton')
-    .addEventListener('click', () => bg.style.backgroundColor = '#9adae5a5')
+    .addEventListener('click', () => {bg.style.backgroundColor = '#9adae5a5'
+    body.style.overflow = 'scroll';}
+)
+
 
 }
 
