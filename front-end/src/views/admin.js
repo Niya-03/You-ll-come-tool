@@ -37,7 +37,6 @@ export async function showAdminView(ctx) {
 
 async function deleteUser(e){
     e.preventDefault();
-    debugger;
     let userId = e.target.dataset.userid;
 
     try{

@@ -10,6 +10,7 @@ import { showMyDashboardView } from './views/myTrips.js';
 import { showEditTripView } from './views/edit.js';
 import { showSearchView } from './views/search.js';
 import { showAdminView } from './views/admin.js';
+import { showCongratsView } from './views/congrats.js';
 
 updateNav();
 
@@ -23,6 +24,7 @@ page('/mytrips', showMyDashboardView);
 page('/edit/:tripId', showEditTripView);
 page('/search/:query', showSearchView);
 page('/admin', showAdminView);
+page('/congrats',showCongratsView);
 
 
 

@@ -106,12 +106,13 @@ const detailsTemplate = (data, tripId, userId, fullPrice, calc, isAdmin, goingLi
     ${userId ? html`<button
             id="addGoingBtn"
             type="button"
-            class="add-going-btn ${userIdHasJoined ? 'going' : ''}">
+            class="add-going-btn ${userIdHasJoined ? 'going' : ''}"
+            href='/details/${tripId}'>
             ${userIdHasJoined ? 'Leave the trip' : 'Will you join them?'}
             
         </button>` : ''}
    
-    ${userId ? html`<div class='goingList'>       
+    ${userId & goingList.data.length ? html`<div class='goingList'>       
         ${goingList.data.length ? goingList.data.map(x => cardTemp(x)) : ''}
     </div>` : ''}
 
@@ -183,62 +184,6 @@ export async function showDetailsView(ctx) {
         return alert(error);
     }
 
-    // async function addGoing(e){
-    //     debugger;
-    //     e.preventDefault();
-
-    //     const response = await fetch(`http://127.0.0.1:5001/addGoingTrip/${tripIdg}/${userIdg}`, {
-    //         method: 'POST',
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         }            
-    //     });
-
-    //     if (response.ok){
-    //         await updateGoingList();
-    //     }
-
-    // }
-
-    async function toggleGoing(e) {
-        e.preventDefault();
-    
-        const isGoing = document.getElementById('addGoingBtn').classList.contains('going');
-    
-        try {
-            const response = await fetch(
-                isGoing
-                    ? `http://127.0.0.1:5001/removeGoingTrip/${tripIdg}/${userIdg}`
-                    : `http://127.0.0.1:5001/addGoingTrip/${tripIdg}/${userIdg}`,
-                {
-                    method: isGoing ? 'DELETE' : 'POST',
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
-    
-            if (response.ok) {
-    
-                const button = document.getElementById('addGoingBtn');
-                if (isGoing) {
-                    button.textContent = "Will you join them?";
-                    button.classList.remove('going');
-                } else {
-                    button.textContent = "Leave the trip";
-                    button.classList.add('going');
-                }
-                debugger;
-               return page.redirect(`/details/${tripIdg}`)
-            } else {
-                console.error("Failed to toggle going status");
-            }
-        } catch (error) {
-            console.error("Error in toggleGoing:", error);
-        }
-    }
-    
-
     async function deleteTrip(e) {
         e.preventDefault();
       
@@ -271,4 +216,49 @@ export async function showDetailsView(ctx) {
             .catch((err) => console.error("Failed to copy: ", err));
     });
 }
+
+async function toggleGoing(e) {
+        e.preventDefault();
+        const isGoing = document.getElementById('addGoingBtn').classList.contains('going');
+    
+        try {
+            const response = await fetch(
+                isGoing
+                    ? `http://127.0.0.1:5001/removeGoingTrip/${tripIdg}/${userIdg}`
+                    : `http://127.0.0.1:5001/addGoingTrip/${tripIdg}/${userIdg}`,
+                {
+                    method: isGoing ? 'DELETE' : 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+    
+            if (response.ok) {
+    
+                const goingList = response.json();
+
+                const button = document.getElementById('addGoingBtn');
+                if (isGoing) {
+                    button.textContent = "Will you join them?";
+                    button.classList.remove('going');
+                    return page.redirect('/alltrips');
+                } else {
+                    button.textContent = "Leave the trip";
+                    button.classList.add('going');
+                    page.redirect('/congrats');
+                    sessionStorage.setItem('cTripId',tripIdg);
+                }
+
+                
+
+            } else {
+                console.error("Failed to toggle going status");
+            }
+
+        } catch (error) {
+            console.error("Error in toggleGoing:", error);
+        }
+    }
+
 

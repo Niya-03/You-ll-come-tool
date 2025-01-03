@@ -78,7 +78,7 @@ query = """CREATE TABLE IF NOT EXISTS trips(
     end_date DATE ,
     ownerId INTEGER ,
     tripImage BLOB,
-    FOREIGN KEY (ownerId) REFERENCES users(userId)
+    FOREIGN KEY (ownerId) REFERENCES users(userId) ON DELETE CASCADE
     );
 """
     
