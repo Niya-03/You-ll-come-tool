@@ -91,7 +91,7 @@ const detailsTemplate = (data, tripId, userId, fullPrice, calc, isAdmin, goingLi
         </div>
 
         <div class='calculator'>
-            <p class="text-field">Full price: ${fullPrice}€<p>
+            <!-- <p class="text-field">Full price: ${fullPrice}€<p> -->
             <p class="text-field">How many people are coming?</p>
             <input id='pCount' @change=${calc} placeholder='Count of people'>
             <p id='pResult' class="text-field">Price per person: </p>
@@ -103,7 +103,7 @@ const detailsTemplate = (data, tripId, userId, fullPrice, calc, isAdmin, goingLi
     <span id="copyMessage" class="copy-message">Link copied!</span>
 
     
-    ${userId ? html`<button
+    ${userId & userId != 1 ? html`<button
             id="addGoingBtn"
             type="button"
             class="add-going-btn ${userIdHasJoined ? 'going' : ''}"
@@ -128,10 +128,11 @@ const cardTemp = (item) => html `
 `
 
 let fPrice;
+let aPrice;
 
 function calc(){
     let count = Number(document.getElementById('pCount').value).toFixed(0);
-    document.getElementById('pResult').textContent = `Price per person: ${(fPrice/count).toFixed(2)}€`;
+    document.getElementById('pResult').textContent = `Price per person: ${(fPrice + aPrice/count).toFixed(2)}€`;
 
 }
 
@@ -160,9 +161,9 @@ export async function showDetailsView(ctx) {
         let fullPrice =
             (parseFloat(String(data.data.goingFlight.price)) || 0) +
             (parseFloat(String(data.data.returnFlight.price)) || 0) +
-            (parseFloat(String(data.data.extraTransportDetails.price)) || 0) +
-            (parseFloat(String(data.data.accomodation.price)) || 0);
+            (parseFloat(String(data.data.extraTransportDetails.price)) || 0);
 
+        aPrice = (parseFloat(String(data.data.accomodation.price)) || 0);
         fPrice = fullPrice;
 
         const response2 = await fetch(`http://127.0.0.1:5001/getGoingTrip/${tripId}`);

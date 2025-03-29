@@ -8,7 +8,7 @@ body {
     background-color: #9adae5a5;
     margin: 0;
     padding: 0px;
-    font-size: 18px;
+    font-size: 23px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -21,7 +21,7 @@ body {
 header {
     position: fixed;
     width: 98%;
-    z-index: 3;
+    z-index: 11;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -35,11 +35,29 @@ header {
 
 /* Navigation bar styling */
 nav {
-    height: 60px;
+    height: max-content;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    #header {
+        flex-direction: column; /* Stack elements vertically on smaller screens */
+        align-items: flex-start; /* Align items to the left */
+    }
+
+    
+
+    #header nav {
+        width: 100%; /* Full width for navigation items */
+        justify-content: flex-start; /* Align navigation to the left */
+    }
+
+    #header nav a {
+        font-size: 1.1em; /* Adjust font size for navigation links */
+    }
 }
 
 nav div {
@@ -119,14 +137,26 @@ section {
     transition: opacity 0.3s ease-in-out;
 }
 
+#logo-div{
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+}
 #logo-img {
     height: 80px;
     width: 90px;
+    display: block;
+    margin-right: 5px;
 }
 
 #logo-text {
-    margin-left: 8%;
-    position: absolute;
+    position: relative;
+    padding-inline-end: 100px;
+    padding-left: 15px;
+    white-space: nowrap;
     font-style: italic;
+    display: inline-block;
     font-size: 35px;
+    width: fit-content;
+    
 }

@@ -16,7 +16,7 @@
     padding: 10px;
     border: 2px solid #FFB703;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 19px;
     color: #023047;
     font-family: 'Teko', sans-serif;
     background-color: #ffffff;
@@ -46,6 +46,7 @@
     border: 1px solid #FFB703;
     margin-bottom: 10px;
     background-color: #f9f9f9;
+    
 
 }
 
@@ -70,7 +71,7 @@
 
 .details p {
     margin: 2px 0;
-    font-size: 20px;
+    font-size: 22px;
 
 }
 
@@ -233,7 +234,7 @@
     /* Rounded corners */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     /* Soft shadow for depth */
-    z-index: 1000;
+    z-index: 10;
     /* Ensure it's on top of other elements */
     overflow-y: auto;
     /* Add scrolling for longer lists */
